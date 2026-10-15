@@ -97,9 +97,6 @@ export function Setup({ onFinish }: { onFinish: () => void }) {
     incrementalHours: 6,
     fullEveryWeeks: 4,
     desktop: true,
-    telegram: false,
-    chatId: '',
-    botToken: '',
   });
   const connection = useStore((s) => s.connection);
   const status = useStore((s) => s.status);
@@ -222,12 +219,8 @@ export function Setup({ onFinish }: { onFinish: () => void }) {
           incrementalEveryMinutes: prefs.incrementalHours * 60,
           fullEveryWeeks: prefs.fullEveryWeeks,
         } as SettingsDto['schedule'],
-        notifications: {
-          desktop: prefs.desktop,
-          telegram: { enabled: prefs.telegram, chatId: prefs.chatId.trim() },
-        } as SettingsDto['notifications'],
+        notifications: { desktop: prefs.desktop } as SettingsDto['notifications'],
       };
-      if (prefs.telegram && prefs.botToken.trim()) await api.setTelegramToken(prefs.botToken.trim());
       await api.putSettings(patch);
       setStep('done');
     });
@@ -658,38 +651,9 @@ export function Setup({ onFinish }: { onFinish: () => void }) {
                 />
                 <span>{t.settings.desktop}</span>
               </label>
-              <label className="field-inline setup-consent">
-                <Checkbox
-                  state={prefs.telegram}
-                  onChange={() => setPrefs((p) => ({ ...p, telegram: !p.telegram }))}
-                  label={t.settings.telegram}
-                />
-                <span>{t.settings.telegram}</span>
-              </label>
-              {prefs.telegram ? (
-                <>
-                  <p className="muted small">{t.settings.telegramHelp}</p>
-                  <div className="row">
-                    <input
-                      className="mono"
-                      aria-label={t.settings.chatId}
-                      placeholder={t.settings.chatId}
-                      inputMode="numeric"
-                      value={prefs.chatId}
-                      onChange={(e) => setPrefs((p) => ({ ...p, chatId: e.target.value }))}
-                    />
-                    <input
-                      className="mono grow"
-                      type="password"
-                      autoComplete="off"
-                      aria-label={t.settings.botToken}
-                      placeholder={t.settings.tokenPlaceholder}
-                      value={prefs.botToken}
-                      onChange={(e) => setPrefs((p) => ({ ...p, botToken: e.target.value }))}
-                    />
-                  </div>
-                </>
-              ) : null}
+              <p className="muted small" data-testid="setup-command-intro">
+                {S.commandIntro}
+              </p>
               <p className="muted small">{S.prefsLater}</p>
             </div>
             <div className="row">
@@ -697,7 +661,7 @@ export function Setup({ onFinish }: { onFinish: () => void }) {
                 variant="primary"
                 icon="check"
                 busy={busy}
-                disabled={busy || (prefs.telegram && (!/^-?\d+$/.test(prefs.chatId.trim()) || !prefs.botToken.trim()))}
+                disabled={busy}
                 onClick={() => void savePrefs()}
                 data-testid="save-prefs"
               >

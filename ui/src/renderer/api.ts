@@ -160,8 +160,7 @@ export const api = {
   doctor: () => call<DoctorCheck[]>('GET', '/v1/doctor'),
   notifications: (limit = 20) => call<NotificationLogItem[]>('GET', `/v1/notifications?limit=${limit}`),
   notificationConfig: () => call<NotificationConfigDto>('GET', '/v1/notifications/config'),
-  setTelegramToken: (token: string | null) => call<{ ok: true }>('PUT', '/v1/notifications/telegram-token', { token }),
-  testNotification: (channel?: 'telegram' | 'command') =>
+  testNotification: (channel?: 'command') =>
     call<NotificationTestResult[]>('POST', '/v1/notifications/test', channel ? { channel } : {}),
 
   whoami: () => call<WhoAmIDto>('GET', '/v1/whoami'),

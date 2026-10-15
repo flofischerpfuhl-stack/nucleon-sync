@@ -27,7 +27,7 @@ export type DaemonEvent =
   | { type: 'deletions_changed'; pending: number }
   /** storage measurement of one account started/finished (fix-ui-round1; additive) */
   | { type: 'storage'; accountId: string; phase: 'start' | 'done' | 'failed'; message?: string }
-  /** emitted by the engine; delivered as desktop notification by the UI and by the notifier (Telegram bot, notify command) */
+  /** emitted by the engine; delivered as desktop notification by the UI and by the notifier (notify command) */
   | { type: 'notice'; notice: Notice }
   /** an agent asked for a destructive action, or an approval was decided/expired (agent layer; additive) */
   | { type: 'approval'; approval: ApprovalDto };

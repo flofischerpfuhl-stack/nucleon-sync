@@ -120,27 +120,18 @@ describe('nucleon-sync CLI', () => {
     expect(w2.stderr).toContain('--ui-token');
   });
 
-  it('notifications: config, telegram token from stdin (UI token only), test', async () => {
+  it('notifications: config (notify command only), test (UI token only)', async () => {
     const before = await cli(['notifications', 'config', '--json']);
     expect(before.code).toBe(0);
-    expect(JSON.parse(before.stdout)).toMatchObject({ telegram: { tokenSet: false }, command: { configured: false } });
-    const token = '123456:FAKE-cli-token_abcdefghijklmnopqrstuvwxyz';
-    const store = (args: string[]) =>
-      new Promise<number>((resolve) => {
-        const p = execFile(BIN, args, { env: m.env }, (err) =>
-          resolve(err ? ((err as { code?: number }).code ?? 1) : 0),
-        );
-        p.stdin!.end(`${token}\n`);
-      });
-    expect(await store(['notifications', 'telegram-token', '--json'])).toBe(6); // agent token: forbidden
-    expect(await store(['notifications', 'telegram-token', '--ui-token', '--json'])).toBe(0);
-    const after = await cli(['notifications', 'config', '--json']);
-    expect(JSON.parse(after.stdout).telegram.tokenSet).toBe(true);
-    expect(after.stdout).not.toContain(token);
+    expect(JSON.parse(before.stdout)).toEqual({ command: { configured: false, program: null } });
+    expect((await cli(['notifications', 'test', '--json'])).code).toBe(6); // agent token: forbidden
     const test = await cli(['notifications', 'test', '--ui-token', '--json']);
-    expect(test.code).toBe(0); // no channel switched on: nothing to send
+    expect(test.code).toBe(0); // no notify command configured: nothing to send
     expect(JSON.parse(test.stdout)).toEqual([]);
-    expect((await cli(['notifications', 'telegram-token', '--remove', '--ui-token', '--json'])).code).toBe(0);
+    expect((await cli(['notifications', 'test', 'sms', '--ui-token', '--json'])).code).toBe(2); // usage
+    // the removed bot-token command is a usage error now (it used to store a token from stdin)
+    expect((await cli(['notifications', 'telegram-token', '--ui-token', '--json'])).code).toBe(2);
+    expect((await cli(['notifications', '--limit', '5', '--json'])).code).toBe(0);
   });
 
   it('doctor --json via the daemon', async () => {

@@ -11,6 +11,7 @@ import { PauseTimers } from '../accounts/pause.ts';
 import { SettingsService } from '../accounts/settings.ts';
 import { StorageService } from '../accounts/storage.ts';
 import type { AccountRow, PairRow } from '../db/repo.ts';
+import { removeLegacyBotToken } from '../notify/legacyToken.ts';
 import { Notifier } from '../notify/notifier.ts';
 
 export interface Services {
@@ -62,6 +63,8 @@ export function createServices(ctx: ServiceContext): Services {
       pauses.start();
       storage.start();
       notifier.start();
+      // a chat bot token left behind by 0.3.x (built-in channel removed in 0.4.0): once, best effort, async
+      void removeLegacyBotToken(ctx);
     },
     stop: () => {
       accounts.close();

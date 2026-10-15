@@ -236,11 +236,11 @@ CREATE TABLE IF NOT EXISTS storage_samples (
 );
 CREATE INDEX IF NOT EXISTS storage_samples_acc ON storage_samples(account_id, measured_at);
 
--- Notification log for de-duplication (Telegram bot, notify command).
+-- Notification log for de-duplication (notify command).
 CREATE TABLE IF NOT EXISTS notifications (
   id               INTEGER PRIMARY KEY,
   ts               INTEGER NOT NULL,
-  channel          TEXT NOT NULL,                   -- desktop | telegram
+  channel          TEXT NOT NULL,                   -- command
   dedupe_key       TEXT NOT NULL,                   -- e.g. 'error:auth:sam'
   message          TEXT NOT NULL,
   ok               INTEGER,

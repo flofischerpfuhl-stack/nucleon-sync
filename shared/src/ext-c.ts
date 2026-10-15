@@ -62,32 +62,26 @@ export interface AgentTokenDto {
   token: string;
 }
 
-/** GET /v1/notifications?limit= — notifier log (Telegram bot, notify command), newest first. */
+/** GET /v1/notifications?limit= — notifier log (notify command), newest first. */
 export interface NotificationLogItem {
   id: number;
   ts: string;
-  channel: 'telegram' | 'command' | 'desktop';
+  channel: 'command' | 'desktop';
   key: string;
   message: string;
   ok: boolean | null;
   detail: string | null;
 }
 
-/** GET /v1/notifications/config — what is configured outside the settings (secrets, daemon.json). */
+/** GET /v1/notifications/config — what is configured outside the settings (daemon.json). */
 export interface NotificationConfigDto {
-  telegram: { tokenSet: boolean };
   /** daemon.json `notifyCommand` (argv, run without a shell on every notification) */
   command: { configured: boolean; program: string | null };
 }
 
-/** PUT /v1/notifications/telegram-token (UI token only): stores the bot token in the keyring; null removes it. */
-export interface TelegramTokenRequest {
-  token: string | null;
-}
-
 /** POST /v1/notifications/test (UI token only) */
 export interface NotificationTestResult {
-  channel: 'telegram' | 'command';
+  channel: 'command';
   ok: boolean;
   detail: string;
 }

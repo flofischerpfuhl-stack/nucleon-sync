@@ -29,8 +29,6 @@ import type {
 
 import { PLAIN_CLI_SECRET } from '../accounts/context.ts';
 import { maintenanceSummary } from '../accounts/maintenance.ts';
-import { appSecret } from '../notify/appSecrets.ts';
-import { looksLikeBotToken } from '../notify/telegram.ts';
 import type { ActivityFilter, EngineApi } from '../engine/api.ts';
 import { badRequest, conflict, HttpError, notFound } from '../util/http.ts';
 import { rotateToken } from '../util/token.ts';
@@ -611,31 +609,15 @@ export function buildRoutes(o: {
     s.notifier.log(intParam(url.searchParams.get('limit'), 50, 1, 500)),
   );
   add('GET', /^\/v1\/notifications\/config$/, 'read', () => {
-    let tokenSet = false;
-    try {
-      tokenSet = !!appSecret(s.ctx, 'telegram-bot-token').get();
-    } catch {
-      /* keyring not reachable: reported as not set */
-    }
     const argv = s.ctx.config.notifyCommand ?? [];
     return {
-      telegram: { tokenSet },
       command: { configured: argv.length > 0, program: argv[0] ? path.basename(argv[0]) : null },
     } satisfies NotificationConfigDto;
   });
-  add('PUT', /^\/v1\/notifications\/telegram-token$/, 'ui', ({ body }) => {
-    const t = (obj(body) as { token?: unknown }).token;
-    const store = appSecret(s.ctx, 'telegram-bot-token');
-    if (t === null) store.remove();
-    else if (typeof t === 'string' && looksLikeBotToken(t)) store.set(t.trim());
-    else throw badRequest('token must look like <bot id>:<secret> (from @BotFather), or null to remove it');
-    return { ok: true };
-  });
   add('POST', /^\/v1\/notifications\/test$/, 'ui', async ({ body }) => {
     const ch = (obj(body ?? {}) as { channel?: unknown }).channel;
-    if (ch !== undefined && ch !== 'telegram' && ch !== 'command')
-      throw badRequest('channel must be telegram or command');
-    return s.notifier.test(ch as 'telegram' | 'command' | undefined);
+    if (ch !== undefined && ch !== 'command') throw badRequest('channel must be command (or left out)');
+    return s.notifier.test(ch);
   });
   add('GET', /^\/v1\/tokens\/agent$/, 'ui', () => ({ file: s.ctx.paths.agentTokenFile, token: o.tokens.agent ?? '' }));
   add('POST', /^\/v1\/tokens\/agent\/rotate$/, 'ui', (c) => {

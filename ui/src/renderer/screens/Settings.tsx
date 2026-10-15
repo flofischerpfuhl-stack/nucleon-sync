@@ -109,10 +109,9 @@ function AppearanceCard() {
   );
 }
 
-/** Bot token (keyring, write-only), the daemon.json notify command and a test button. */
+/** The daemon.json notify command (the channel beyond the desktop) and a test button. */
 function NotificationChannels() {
   const cfg = useApi(() => api.notificationConfig(), []);
-  const [token, setToken] = useState('');
   const [busy, setBusy] = useState(false);
   if (cfg.error) return null;
   const run = async (fn: () => Promise<void>) => {
@@ -127,52 +126,7 @@ function NotificationChannels() {
   };
   return (
     <>
-      <Row label={S.botToken}>
-        <span className={cfg.data?.telegram.tokenSet ? 'tone-ok' : 'muted'} data-testid="telegram-token-state">
-          {cfg.data?.telegram.tokenSet ? S.tokenSet : S.tokenMissing}
-        </span>
-        <input
-          className="mono"
-          type="password"
-          autoComplete="off"
-          aria-label={S.botToken}
-          placeholder={S.tokenPlaceholder}
-          value={token}
-          style={{ width: 240 }}
-          onChange={(e) => setToken(e.target.value)}
-        />
-        <Button
-          small
-          busy={busy}
-          disabled={!token.trim()}
-          onClick={() =>
-            void run(async () => {
-              await api.setTelegramToken(token.trim());
-              setToken('');
-              toast('ok', S.tokenSaved);
-              cfg.reload();
-            })
-          }
-        >
-          {S.saveToken}
-        </Button>
-        {cfg.data?.telegram.tokenSet ? (
-          <Button
-            small
-            variant="ghost"
-            onClick={() =>
-              void run(async () => {
-                await api.setTelegramToken(null);
-                toast('ok', S.tokenRemoved);
-                cfg.reload();
-              })
-            }
-          >
-            {S.removeToken}
-          </Button>
-        ) : null}
-      </Row>
-      <Row label={S.command}>
+      <Row label={S.command} hint={S.commandHelp}>
         <span className={cfg.data?.command.configured ? 'mono' : 'muted small'}>
           {cfg.data?.command.configured ? S.commandConfigured(cfg.data.command.program ?? '?') : S.commandNone}
         </span>
@@ -450,23 +404,6 @@ export function Settings() {
             checked={d.notifications.desktop}
             label={S.desktop}
             onChange={(v) => set((x) => (x.notifications.desktop = v))}
-          />
-        </Row>
-        <Row label={S.telegram} hint={S.telegramHelp}>
-          <Switch
-            checked={d.notifications.telegram.enabled}
-            label={S.telegram}
-            onChange={(v) => set((x) => (x.notifications.telegram.enabled = v))}
-          />
-          <span>{S.chatId}</span>
-          <input
-            className="mono"
-            aria-label={S.chatId}
-            inputMode="numeric"
-            value={d.notifications.telegram.chatId}
-            style={{ width: 160 }}
-            data-testid="telegram-chat-id"
-            onChange={(e) => set((x) => (x.notifications.telegram.chatId = e.target.value.trim()))}
           />
         </Row>
         <NotificationChannels />

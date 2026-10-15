@@ -238,14 +238,11 @@ export function normalizeSettings(raw: unknown, defaults: SettingsDto): Settings
       fullWeekly: { ...defaults.schedule.fullWeekly, ...(fw as Partial<SettingsDto['schedule']['fullWeekly']>) },
     } as SettingsDto['schedule'],
     transfer: { ...defaults.transfer, ...(obj(s.transfer) as Partial<SettingsDto['transfer']>) },
-    notifications: {
-      ...defaults.notifications,
-      ...(obj(s.notifications) as Partial<SettingsDto['notifications']>),
-      telegram: {
-        ...defaults.notifications.telegram,
-        ...(obj(obj(s.notifications).telegram) as Partial<SettingsDto['notifications']['telegram']>),
-      },
-    },
+    // only the known keys: settings of channels that no longer exist are not sent back
+    notifications: (({ desktop, minIntervalMinutes }: SettingsDto['notifications']) => ({
+      desktop,
+      minIntervalMinutes,
+    }))({ ...defaults.notifications, ...(obj(s.notifications) as Partial<SettingsDto['notifications']>) }),
     storagePoolBytes: typeof s.storagePoolBytes === 'number' ? s.storagePoolBytes : null,
     globalExcludes: Array.isArray(s.globalExcludes)
       ? (s.globalExcludes as SettingsDto['globalExcludes'])

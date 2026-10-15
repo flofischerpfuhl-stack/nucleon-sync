@@ -92,7 +92,6 @@ export const DEFAULT_SETTINGS: SettingsDto = {
   },
   notifications: {
     desktop: true,
-    telegram: { enabled: false, chatId: '' },
     minIntervalMinutes: 360,
   },
   storagePoolBytes: null,

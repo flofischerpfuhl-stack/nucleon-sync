@@ -37,8 +37,6 @@ export interface DaemonFileConfig {
   requiredMounts?: string[];
   /** absolute local paths that may never be part of a pair (pair validation + rule matcher), e.g. a backup disk */
   protectedPaths?: string[];
-  /** Telegram Bot API base (default https://api.telegram.org; tests point this at a fake endpoint) */
-  telegramApiBase?: string;
   /**
    * Command run on every notification (problems right away, pending decisions in the daily digest): an argv array,
    * started without a shell, 30 s timeout. It gets NUCLEON_SYNC_EVENT (notice | digest | test), NUCLEON_SYNC_SEVERITY,

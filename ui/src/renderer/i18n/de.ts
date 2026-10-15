@@ -684,26 +684,16 @@ export const de: Strings = {
     noLimit: 'kein Limit',
     notifications: 'Benachrichtigungen',
     desktop: 'Desktop-Benachrichtigungen',
-    telegram: 'Telegram-Bot',
-    chatId: 'Chat-ID',
-    botToken: 'Bot-Token',
-    tokenSet: 'im Schlüsselbund gespeichert',
-    tokenMissing: 'nicht gesetzt',
-    tokenPlaceholder: '123456789:AA…',
-    saveToken: 'Token speichern',
-    removeToken: 'Token entfernen',
-    tokenSaved: 'Bot-Token im Schlüsselbund gespeichert.',
-    tokenRemoved: 'Bot-Token entfernt.',
-    telegramHelp:
-      'Lege mit @BotFather einen eigenen Bot an, schick ihm eine Nachricht und trag dann sein Token und deine Chat-ID ein. Probleme kommen sofort, offene Entscheidungen einmal am Tag.',
     command: 'Benachrichtigungsbefehl',
     commandConfigured: (program: string) => `${program} (daemon.json „notifyCommand“)`,
     commandNone:
       'keiner – mit „notifyCommand“ in daemon.json startest du bei jeder Benachrichtigung ein eigenes Skript',
+    commandHelp:
+      'Läuft bei jeder Benachrichtigung (Probleme sofort, offene Entscheidungen einmal am Tag), ohne Shell; das Ereignis steht in den Umgebungsvariablen NUCLEON_SYNC_*. Damit bekommst du Nachrichten aufs Handy (ntfy, ein Chat-Bot) oder per Mail – ein Beispielskript steht in der README.',
     test: 'Test senden',
     testResult: (channel: string, ok: boolean, detail: string) =>
       `${channel}: ${ok ? 'gesendet' : `fehlgeschlagen (${detail})`}`,
-    testNothing: 'Kein Benachrichtigungskanal ist eingeschaltet.',
+    testNothing: 'Kein Benachrichtigungsbefehl eingerichtet (daemon.json „notifyCommand“).',
     minInterval: 'Höchstens alle',
     hoursPerKind: 'h je Fehlerart',
     recentNotifications: 'Zuletzt gesendet',
@@ -989,6 +979,8 @@ export const de: Strings = {
     prefsIntro: 'Wie oft Nucleon Sync nach Änderungen sucht und wie es dich über Probleme informiert.',
     incrementalEvery: 'Nach Änderungen suchen alle',
     hours: (h: number) => `${h} Stunden`,
+    commandIntro:
+      'Nachrichten aufs Handy oder per Mail: Nucleon Sync kann bei jeder Benachrichtigung einen eigenen Befehl starten – trag dazu „notifyCommand“ in ~/.config/nucleon-sync/daemon.json ein, z. B. ein kleines Skript, das an ntfy oder einen Chat-Bot schickt. Wie das geht, steht in der README.',
     prefsLater: 'Alles hier lässt sich später unter Einstellungen ändern.',
     savePrefs: 'Speichern und weiter',
     doneTitle: 'Fertig eingerichtet',

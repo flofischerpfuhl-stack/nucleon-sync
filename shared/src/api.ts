@@ -390,12 +390,7 @@ export interface TransferSettings {
 export interface NotificationSettings {
   /** desktop notifications from the dashboard (tray app) */
   desktop: boolean;
-  /**
-   * Telegram bot of your own: problems right away, pending decisions in a daily digest. The bot token is stored in the
-   * keyring (PUT /v1/notifications/telegram-token), never in the settings; chatId is the numeric chat id.
-   */
-  telegram: { enabled: boolean; chatId: string };
-  /** de-dup window per problem (minutes) for Telegram and the notify command */
+  /** de-dup window per problem (minutes) for the notify command (daemon.json `notifyCommand`) */
   minIntervalMinutes: number;
 }
 

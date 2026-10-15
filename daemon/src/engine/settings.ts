@@ -42,7 +42,6 @@ export function readSettings(db: DatabaseSync): SettingsDto {
     transfer: { ...DEFAULT_SETTINGS.transfer, ...(transfer ?? {}) },
     notifications: {
       desktop: notifications?.desktop ?? DEFAULT_SETTINGS.notifications.desktop,
-      telegram: { ...DEFAULT_SETTINGS.notifications.telegram, ...(notifications?.telegram ?? {}) },
       minIntervalMinutes: notifications?.minIntervalMinutes ?? DEFAULT_SETTINGS.notifications.minIntervalMinutes,
     },
     storagePoolBytes: pick('storagePoolBytes') ?? DEFAULT_SETTINGS.storagePoolBytes,

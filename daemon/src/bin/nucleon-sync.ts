@@ -113,7 +113,7 @@ User only (--ui-token):
   tokens [list] | tokens create NAME --scopes sync,manage[,destructive] [--no-file]
   tokens revoke ID | tokens enable|disable ID | tokens set ID scopes=a,b name=..   token [--rotate]
   approvals [list] | approvals approve|deny ID
-  notifications test [telegram|command]   notifications telegram-token [--remove]  (token on stdin)
+  notifications test [command]
 
 Global: --json (one JSON document on stdout, never prompts), --yes/--confirm (confirm destructive actions),
         --confirm-token T, --approval-timeout S (default 300), --no-wait, --agent NAME, --ui-token
@@ -715,8 +715,7 @@ class Cli {
       case 'notifications': {
         if (args[0] === 'test') {
           const ch = args[1];
-          if (ch !== undefined && ch !== 'telegram' && ch !== 'command')
-            throw usage('notifications test [telegram|command]');
+          if (ch !== undefined && ch !== 'command') throw usage('notifications test [command]');
           const r = await this.call<NotificationTestResult[]>(
             'POST',
             '/v1/notifications/test',
@@ -729,27 +728,17 @@ class Cli {
           );
           return r.every((x) => x.ok) ? EXIT.ok : EXIT.error;
         }
-        if (args[0] === 'telegram-token') {
-          // the token is read from stdin (never from argv: it would end up in the shell history and `ps`)
-          const remove = !!v.remove;
-          let token: string | null = null;
-          if (!remove) {
-            token = readFileSync(0, 'utf8').trim();
-            if (!token) throw usage('notifications telegram-token --ui-token < file-with-token   (or --remove)');
-          }
-          const r = await this.call('PUT', '/v1/notifications/telegram-token', { token });
-          this.out(r, () => (remove ? 'Telegram bot token removed' : 'Telegram bot token stored in the keyring'));
-          return EXIT.ok;
-        }
         if (args[0] === 'config') {
           const c = await this.call<NotificationConfigDto>('GET', '/v1/notifications/config');
           this.out(
             c,
             () =>
-              `telegram bot token: ${c.telegram.tokenSet ? 'set' : 'not set'}\nnotify command: ${c.command.configured ? c.command.program : 'none'}`,
+              `notify command: ${c.command.configured ? c.command.program : 'none (set "notifyCommand" in daemon.json)'}`,
           );
           return EXIT.ok;
         }
+        if (args[0] !== undefined)
+          throw usage('notifications [--limit N] | notifications config | notifications test [command]');
         const l = await this.call<NotificationLogItem[]>('GET', `/v1/notifications?limit=${Number(v.limit ?? 50)}`);
         this.out(
           l,
@@ -1270,7 +1259,6 @@ async function main(argv: string[]): Promise<number> {
         direction: { type: 'string' },
         disabled: { type: 'boolean', default: false },
         rotate: { type: 'boolean', default: false },
-        remove: { type: 'boolean', default: false },
         scopes: { type: 'string' },
         'no-file': { type: 'boolean', default: false },
         prefix: { type: 'string' },

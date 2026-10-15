@@ -66,7 +66,7 @@ describe('token scopes', () => {
       ['POST', '/v1/conflicts/1/resolve', { resolution: 'ignore' }],
       ['POST', '/v1/deletions/decide', { ids: [1], decision: 'trash_remote' }],
       ['POST', '/v1/maintenance/empty-trash', { accountId: 'alex' }],
-      ['PUT', '/v1/notifications/telegram-token', { token: null }],
+      ['POST', '/v1/notifications/test', {}],
       ['GET', '/v1/tokens/agent'],
     ];
     for (const [method, p, body] of cases)
@@ -152,7 +152,8 @@ describe('settings', () => {
       { schedule: { incrementalEveryMinutes: 5 } },
       { transfer: { maxWorkersTotal: 2, maxWorkersPerAccount: 3 } },
       { transfer: { quietHours: { from: '25:00', to: '07:00', bandwidthLimitKBps: null } } },
-      { notifications: { telegram: { enabled: true, chatId: 'abc' } } },
+      { notifications: { minIntervalMinutes: 0 } },
+      { notifications: { sms: true } },
       { globalExcludes: [{ kind: 'exclude', patternType: 'glob', pattern: 'a/b', source: 'user' }] },
       { foo: 1 },
       [1, 2],

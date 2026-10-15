@@ -214,7 +214,6 @@ class Fixtures {
     },
   ];
   private approvals: ApprovalDto[] = [];
-  private telegramTokenSet = true;
   private notificationLog: NotificationLogItem[] = [
     {
       id: 1,
@@ -1108,20 +1107,8 @@ class Fixtures {
       },
     ],
     ['GET', /^\/v1\/notifications$/, () => this.notificationLog],
-    [
-      'GET',
-      /^\/v1\/notifications\/config$/,
-      () => ({ telegram: { tokenSet: this.telegramTokenSet }, command: { configured: false, program: null } }),
-    ],
-    [
-      'PUT',
-      /^\/v1\/notifications\/telegram-token$/,
-      (_m, b) => {
-        this.telegramTokenSet = (b as { token: string | null }).token !== null;
-        return { ok: true };
-      },
-    ],
-    ['POST', /^\/v1\/notifications\/test$/, () => [{ channel: 'telegram', ok: true, detail: 'sent' }]],
+    ['GET', /^\/v1\/notifications\/config$/, () => ({ command: { configured: true, program: 'notify-phone.sh' } })],
+    ['POST', /^\/v1\/notifications\/test$/, () => [{ channel: 'command', ok: true, detail: 'command exited 0' }]],
     [
       'DELETE',
       /^\/v1\/pairs\/(\d+)$/,

@@ -1,18 +1,17 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /**
- * Notifier: consumes engine `notice` events and forwards them to the channels the user configured. Desktop
- * notifications are the dashboard's job; the daemon has two optional channels:
+ * Notifier: consumes engine `notice` events and forwards them to the user's own notify command. Desktop
+ * notifications are the dashboard's job; the daemon has one optional channel:
  *
- *  - Telegram bot (settings `notifications.telegram`: enabled + chat id; the bot token lives in the keyring, see
- *    appSecrets.ts) — Bot API `sendMessage`;
- *  - notify command (daemon.json `notifyCommand`, argv without a shell) — for anything else (mail, ntfy, a chat bridge,
- *    another agent). The event is passed in NUCLEON_SYNC_* environment variables (see DaemonFileConfig).
+ *  - notify command (daemon.json `notifyCommand`, argv without a shell) — for anything beyond the desktop (a chat bot,
+ *    ntfy, mail, another agent). The event is passed in NUCLEON_SYNC_* environment variables (see DaemonFileConfig);
+ *    the README has example scripts.
  *
- * Rules (both channels):
+ * Rules:
  *  - warn/error notices: sent right away, de-duplicated per notice key within `minIntervalMinutes`
  *  - pending decisions (new conflicts, pending deletions, adoption proposals): only in one daily digest
  *  - info notices: never
- *  - every attempt is logged in `notifications` (channel 'telegram' | 'command'), never with the token
+ *  - every attempt is logged in `notifications` (channel 'command')
  */
 import { spawn } from 'node:child_process';
 
@@ -21,15 +20,13 @@ import type { DaemonEvent, Notice, NotificationLogItem, NotificationTestResult }
 import { readSettings } from '../engine/settings.ts';
 import { log } from '../util/log.ts';
 import type { ServiceContext } from '../accounts/context.ts';
-import { appSecret } from './appSecrets.ts';
-import { sendTelegram } from './telegram.ts';
 
 /** Notice keys that only go into the daily digest. */
 export function isDigestKey(key: string): boolean {
   return key === 'conflicts:new' || key === 'deletions:pending' || key.startsWith('adoption:');
 }
 
-export type Channel = 'telegram' | 'command';
+export type Channel = 'command';
 
 /** What a channel gets: the full text plus the structured parts (for the command's environment). */
 export interface Delivery {
@@ -81,19 +78,15 @@ export class Notifier {
     return readSettings(this.c.db).notifications;
   }
 
-  /** channels that are switched on (Telegram needs a chat id; the token is checked at send time) */
+  /** channels that are switched on (today only the notify command from daemon.json) */
   channels(): Channel[] {
-    const s = this.settings();
-    const out: Channel[] = [];
-    if (s.telegram.enabled && s.telegram.chatId) out.push('telegram');
-    if (this.c.config.notifyCommand?.length) out.push('command');
-    return out;
+    return this.c.config.notifyCommand?.length ? ['command'] : [];
   }
 
   private lastSent(key: string, okOnly: boolean): number | null {
     const r = this.c.db
       .prepare(
-        `SELECT MAX(ts) AS ts FROM notifications WHERE channel IN ('telegram', 'command') AND dedupe_key = ?${okOnly ? ' AND ok = 1' : ''}`,
+        `SELECT MAX(ts) AS ts FROM notifications WHERE channel = 'command' AND dedupe_key = ?${okOnly ? ' AND ok = 1' : ''}`,
       )
       .get(key) as { ts: number | null };
     return r.ts;
@@ -191,11 +184,7 @@ export class Notifier {
   private async deliver(channel: Channel, d: Delivery): Promise<{ ok: boolean; detail: string }> {
     let res: { ok: boolean; detail: string };
     try {
-      res = this.sendOverride
-        ? await this.sendOverride(channel, d)
-        : channel === 'telegram'
-          ? await this.sendTelegram(d.text)
-          : await this.runCommand(d);
+      res = this.sendOverride ? await this.sendOverride(channel, d) : await this.runCommand(d);
     } catch (e) {
       res = { ok: false, detail: (e as Error).message.slice(0, 300) };
     }
@@ -204,19 +193,6 @@ export class Notifier {
       .run(Date.now(), channel, d.key, d.text, res.ok ? 1 : 0, res.detail);
     log(res.ok ? 'info' : 'warn', 'notification', { channel, key: d.key, ok: res.ok, detail: res.detail });
     return res;
-  }
-
-  private async sendTelegram(text: string): Promise<{ ok: boolean; detail: string }> {
-    const chatId = this.settings().telegram.chatId;
-    if (!chatId) return { ok: false, detail: 'no Telegram chat id configured' };
-    const token = appSecret(this.c, 'telegram-bot-token').get()?.trim();
-    if (!token) return { ok: false, detail: 'no Telegram bot token stored (Settings → Notifications)' };
-    return sendTelegram({
-      apiBase: this.c.config.telegramApiBase ?? 'https://api.telegram.org',
-      token,
-      chatId,
-      text,
-    });
   }
 
   private runCommand(d: Delivery): Promise<{ ok: boolean; detail: string }> {
@@ -282,7 +258,7 @@ export class Notifier {
     ).map((r) => ({
       id: r.id,
       ts: new Date(r.ts).toISOString(),
-      channel: (r.channel === 'command' ? 'command' : 'telegram') as NotificationLogItem['channel'],
+      channel: (r.channel === 'desktop' ? 'desktop' : 'command') as NotificationLogItem['channel'],
       key: r.dedupe_key,
       message: r.message,
       ok: r.ok === null ? null : !!r.ok,

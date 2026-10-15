@@ -12,6 +12,7 @@ import type { ServiceContext } from './context.ts';
 import { validateRule } from './pairs.ts';
 
 const SECTIONS = ['schedule', 'transfer', 'notifications', 'storagePoolBytes', 'globalExcludes'] as const;
+const NOTIFICATION_KEYS = ['desktop', 'minIntervalMinutes'] as const;
 
 const int = (v: unknown, min: number, max: number, where: string): number => {
   if (typeof v !== 'number' || !Number.isInteger(v) || v < min || v > max)
@@ -54,14 +55,8 @@ export function validateSettings(s: SettingsDto): SettingsDto {
   nullablePos(t.maxFileBytes, 'transfer.maxFileBytes');
   const n = s.notifications;
   bool(n.desktop, 'notifications.desktop');
-  if (!n.telegram || typeof n.telegram !== 'object') throw badRequest('notifications.telegram required');
-  bool(n.telegram.enabled, 'notifications.telegram.enabled');
-  if (typeof n.telegram.chatId !== 'string' || !/^(-?\d{1,20})?$/.test(n.telegram.chatId.trim()))
-    throw badRequest('notifications.telegram.chatId must be a numeric chat id (or empty)');
-  n.telegram = { enabled: n.telegram.enabled, chatId: n.telegram.chatId.trim() };
-  if (n.telegram.enabled && !n.telegram.chatId)
-    throw badRequest('notifications.telegram.chatId is required when Telegram is enabled');
   int(n.minIntervalMinutes, 1, 7 * 24 * 60, 'notifications.minIntervalMinutes');
+  s.notifications = { desktop: n.desktop, minIntervalMinutes: n.minIntervalMinutes };
   nullablePos(s.storagePoolBytes, 'storagePoolBytes');
   if (!Array.isArray(s.globalExcludes)) throw badRequest('globalExcludes must be an array');
   if (s.globalExcludes.length > 1000) throw badRequest('too many globalExcludes');
@@ -96,11 +91,14 @@ export class SettingsService {
     };
     if ('schedule' in p && (p.schedule as { fullWeekly?: object }).fullWeekly)
       merged.schedule.fullWeekly = { ...cur.schedule.fullWeekly, ...(p.schedule as { fullWeekly: object }).fullWeekly };
-    if ('notifications' in p && (p.notifications as { telegram?: object }).telegram)
-      merged.notifications.telegram = {
-        ...cur.notifications.telegram,
-        ...(p.notifications as { telegram: object }).telegram,
-      };
+    if ('notifications' in p) {
+      const keys = Object.keys((p.notifications as object) ?? {});
+      const unknownN = keys.filter((k) => !(NOTIFICATION_KEYS as readonly string[]).includes(k));
+      if (unknownN.length)
+        throw badRequest(
+          `unknown notification settings: ${unknownN.join(', ')} (other channels: set "notifyCommand" in daemon.json)`,
+        );
+    }
     validateSettings(merged);
     this.c.db.exec('BEGIN IMMEDIATE');
     try {
