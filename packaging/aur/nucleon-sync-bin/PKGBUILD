@@ -25,8 +25,8 @@ conflicts=("${_pkgname}")
 options=('!strip' '!debug')
 source=("${_pkgname}-${pkgver}-linux-x64.tar.gz::${url}/releases/download/v${pkgver}/${_pkgname}-${pkgver}-linux-x64.tar.gz"
         "${_pkgname}-${pkgver}-src.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
-sha256sums=('c8aa631f78e9b5905a7effa3dbfad0d27b30578109f194a0d39b566e55c5e03e'
-            'b12d97e042944351b08eea56d23dd9768187491a7ca1b71410fbcb5063ba03fa')
+sha256sums=('d0d918dbce14e81860e623b046ea30c518c287e03f43bbd3a0e255b431e9b75a'
+            '1bec429592bd103d2b88002201d0fb4157c3077ab9bd2a799c6fa0bd4258760c')
 
 package() {
   local app="${srcdir}/${_pkgname}-${pkgver}-linux-x64"

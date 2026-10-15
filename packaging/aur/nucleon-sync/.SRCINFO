@@ -1,6 +1,6 @@
 pkgbase = nucleon-sync
 	pkgdesc = Sync folders with Proton Drive (third-party app on the official proton-drive CLI): service, tray dashboard, agent CLI
-	pkgver = 0.3.0
+	pkgver = 0.3.1
 	pkgrel = 1
 	url = https://github.com/flofischerpfuhl-stack/nucleon-sync
 	arch = any
@@ -18,7 +18,7 @@ pkgbase = nucleon-sync
 	optdepends = jq: nucleon-sync-omarchy (Omarchy bar and menu integration)
 	provides = nucleon-sync
 	conflicts = nucleon-sync-bin
-	source = nucleon-sync-0.3.0.tar.gz::https://github.com/flofischerpfuhl-stack/nucleon-sync/archive/refs/tags/v0.3.0.tar.gz
-	sha256sums = b12d97e042944351b08eea56d23dd9768187491a7ca1b71410fbcb5063ba03fa
+	source = nucleon-sync-0.3.1.tar.gz::https://github.com/flofischerpfuhl-stack/nucleon-sync/archive/refs/tags/v0.3.1.tar.gz
+	sha256sums = 1bec429592bd103d2b88002201d0fb4157c3077ab9bd2a799c6fa0bd4258760c
 
 pkgname = nucleon-sync

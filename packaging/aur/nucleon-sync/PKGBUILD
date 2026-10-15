@@ -23,7 +23,7 @@ optdepends=(
 provides=("${pkgname}")
 conflicts=("${pkgname}-bin")
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
-sha256sums=('b12d97e042944351b08eea56d23dd9768187491a7ca1b71410fbcb5063ba03fa')
+sha256sums=('1bec429592bd103d2b88002201d0fb4157c3077ab9bd2a799c6fa0bd4258760c')
 
 build() {
   cd "${pkgname}-${pkgver}"

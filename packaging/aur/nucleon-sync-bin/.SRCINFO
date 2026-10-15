@@ -1,6 +1,6 @@
 pkgbase = nucleon-sync-bin
 	pkgdesc = Sync folders with Proton Drive (third-party app on the official proton-drive CLI): service, tray dashboard, agent CLI
-	pkgver = 0.3.0
+	pkgver = 0.3.1
 	pkgrel = 1
 	url = https://github.com/flofischerpfuhl-stack/nucleon-sync
 	arch = x86_64
@@ -22,9 +22,9 @@ pkgbase = nucleon-sync-bin
 	conflicts = nucleon-sync
 	options = !strip
 	options = !debug
-	source = nucleon-sync-0.3.0-linux-x64.tar.gz::https://github.com/flofischerpfuhl-stack/nucleon-sync/releases/download/v0.3.0/nucleon-sync-0.3.0-linux-x64.tar.gz
-	source = nucleon-sync-0.3.0-src.tar.gz::https://github.com/flofischerpfuhl-stack/nucleon-sync/archive/refs/tags/v0.3.0.tar.gz
-	sha256sums = c8aa631f78e9b5905a7effa3dbfad0d27b30578109f194a0d39b566e55c5e03e
-	sha256sums = b12d97e042944351b08eea56d23dd9768187491a7ca1b71410fbcb5063ba03fa
+	source = nucleon-sync-0.3.1-linux-x64.tar.gz::https://github.com/flofischerpfuhl-stack/nucleon-sync/releases/download/v0.3.1/nucleon-sync-0.3.1-linux-x64.tar.gz
+	source = nucleon-sync-0.3.1-src.tar.gz::https://github.com/flofischerpfuhl-stack/nucleon-sync/archive/refs/tags/v0.3.1.tar.gz
+	sha256sums = d0d918dbce14e81860e623b046ea30c518c287e03f43bbd3a0e255b431e9b75a
+	sha256sums = 1bec429592bd103d2b88002201d0fb4157c3077ab9bd2a799c6fa0bd4258760c
 
 pkgname = nucleon-sync-bin
