@@ -8,7 +8,8 @@ import type { ErrorClass } from '@nucleon-sync/shared';
  */
 const RULES: [RegExp, ErrorClass][] = [
   [/You need to login first|Failed to refresh session|session in pass|Failed to load session/i, 'auth'],
-  [/\b429\b|Too many requests|rate.?limit/i, 'rate_limited'],
+  // Proton also throttles with "Too many server errors, please try again later" (seen 2026-10 during bulk uploads)
+  [/\b429\b|Too many requests|rate.?limit|Too many server errors|try again later/i, 'rate_limited'],
   [
     /insufficient (storage |volume |device )?(quota|space)|run out of storage|quota exceeded|storage (quota|limit)/i,
     'quota',

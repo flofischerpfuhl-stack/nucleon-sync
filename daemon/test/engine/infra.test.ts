@@ -236,6 +236,7 @@ describe('Scheduler', () => {
 describe('classify + compat', () => {
   it('maps CLI error texts', () => {
     expect(classifyCliError('Request failed with status 429 Too Many Requests')).toBe('rate_limited');
+    expect(classifyCliError('Too many server errors, please try again later')).toBe('rate_limited');
     expect(classifyCliError('Insufficient storage quota')).toBe('quota');
     expect(classifyCliError('Integrity verification failed for file')).toBe('integrity');
     expect(classifyCliError('Failed to load session in pass: exit code 1')).toBe('auth');
