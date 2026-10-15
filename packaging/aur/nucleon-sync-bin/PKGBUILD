@@ -7,7 +7,7 @@
 # bundled. Release checklist: bump pkgver, `updpkgsums`, `makepkg --printsrcinfo > .SRCINFO`, `namcap`.
 pkgname=nucleon-sync-bin
 _pkgname=nucleon-sync
-pkgver=0.3.0
+pkgver=0.3.1
 pkgrel=1
 pkgdesc='Sync folders with Proton Drive (third-party app on the official proton-drive CLI): service, tray dashboard, agent CLI'
 arch=('x86_64')

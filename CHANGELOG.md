@@ -4,7 +4,16 @@ All notable changes to Nucleon Sync. The format follows [Keep a Changelog](https
 versions follow [Semantic Versioning](https://semver.org/). Until 1.0, minor versions may change the local API,
 `daemon.json` or the CLI's JSON output; such changes are listed here.
 
-## [0.3.0] – unreleased
+## [0.3.1] – 2026-10-15
+
+### Fixed
+- Proton's throttling message "Too many server errors, please try again later" is now treated as rate limiting
+  (back off and retry) instead of a permanent failure; such uploads no longer stay failed until the next full run.
+- Removing a two-way pair no longer fails with "FOREIGN KEY constraint failed" when deletions were decided on it.
+- A successful job now supersedes older failed attempts of the same file, so the "failed" counter only shows real,
+  current problems. Migrations 007/008 clear such stale entries in existing databases.
+
+## [0.3.0] – 2026-10-15
 
 First public release.
 

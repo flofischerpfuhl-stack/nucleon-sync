@@ -5,7 +5,7 @@
 # (electron44 from [extra]); no Electron binary is downloaded. The official Proton Drive CLI is a dependency
 # (proton-drive-cli-bin or proton-drive-cli from the AUR) and is never bundled.
 pkgname=nucleon-sync
-pkgver=0.3.0
+pkgver=0.3.1
 pkgrel=1
 _electron=electron44
 pkgdesc='Sync folders with Proton Drive (third-party app on the official proton-drive CLI): service, tray dashboard, agent CLI'
