@@ -20,7 +20,7 @@ import type { DaemonFileConfig, MutableAccountEnv } from './accounts/context.ts'
 import { startDaemon } from './api/daemon.ts';
 import { log } from './util/log.ts';
 
-const VERSION = '0.3.1';
+const VERSION = '0.4.0';
 
 async function main(): Promise<void> {
   const env = process.env;

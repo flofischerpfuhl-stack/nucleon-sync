@@ -7,7 +7,7 @@
 # bundled. Release checklist: bump pkgver, `updpkgsums`, `makepkg --printsrcinfo > .SRCINFO`, `namcap`.
 pkgname=nucleon-sync-bin
 _pkgname=nucleon-sync
-pkgver=0.3.1
+pkgver=0.4.0
 pkgrel=1
 pkgdesc='Sync folders with Proton Drive (third-party app on the official proton-drive CLI): service, tray dashboard, agent CLI'
 arch=('x86_64')
@@ -25,8 +25,9 @@ conflicts=("${_pkgname}")
 options=('!strip' '!debug')
 source=("${_pkgname}-${pkgver}-linux-x64.tar.gz::${url}/releases/download/v${pkgver}/${_pkgname}-${pkgver}-linux-x64.tar.gz"
         "${_pkgname}-${pkgver}-src.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
-sha256sums=('d0d918dbce14e81860e623b046ea30c518c287e03f43bbd3a0e255b431e9b75a'
-            '1bec429592bd103d2b88002201d0fb4157c3077ab9bd2a799c6fa0bd4258760c')
+# filled in at release time (updpkgsums) once the v0.4.0 tag and release files exist
+sha256sums=('SKIP'
+            'SKIP')
 
 package() {
   local app="${srcdir}/${_pkgname}-${pkgver}-linux-x64"

@@ -1,6 +1,6 @@
 {
   "name": "nucleon-sync",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "license": "GPL-3.0-or-later",
   "private": true,
   "description": "Proton Drive sync daemon + Electron dashboard for Linux (multi-account), built on the official proton-drive CLI",

@@ -4,9 +4,48 @@ All notable changes to Nucleon Sync. The format follows [Keep a Changelog](https
 versions follow [Semantic Versioning](https://semver.org/). Until 1.0, minor versions may change the local API,
 `daemon.json` or the CLI's JSON output; such changes are listed here.
 
+## [0.4.0] – unreleased
+
+Minor version because the settings, the local API and the CLI change (see "Upgrading").
+
+### Removed
+
+- Telegram channel (use notifyCommand). The built-in Telegram bot is gone from the service, the dashboard
+  (Settings → Notifications and the setup wizard) and the CLI. Desktop notifications stay, and `notifyCommand` in
+  `daemon.json` runs your own script on every notification; the README has an example script for ntfy and for a
+  Telegram bot of your own.
+- API: `PUT /v1/notifications/telegram-token`; `notifications.telegram` in `SettingsDto`; `telegram` in
+  `GET /v1/notifications/config` (now `{command: {configured, program}}`); the `telegram` channel of
+  `POST /v1/notifications/test` and of the notification log.
+- CLI: `notifications telegram-token` and `notifications test telegram` (`notifications test [command]` stays).
+- `daemon.json`: `telegramApiBase` (ignored if still present).
+
+### Changed
+
+- `PUT /v1/settings` refuses unknown keys under `notifications` with 400.
+- The setup wizard's notifications step explains the notify command instead.
+
+### Upgrading from 0.3.x
+
+- Nothing to do by hand. On the first start, migration 009 removes `notifications.telegram` from the stored
+  settings and the Telegram rows from the notification log.
+- A stored bot token is deleted once, best effort: the keyring item `service=nucleon-sync kind=telegram-bot-token`
+  (through `secret-tool`) and the file `~/.local/state/nucleon-sync/secrets/_telegram-bot-token.enc` (encfile
+  backend). A failure is only logged and never stops the service. To check by hand:
+
+  ```bash
+  secret-tool search service nucleon-sync kind telegram-bot-token   # should print nothing
+  secret-tool clear service nucleon-sync kind telegram-bot-token    # removes a leftover
+  ```
+
+- If you used the Telegram bot, set up the example script from the README with your bot token and chat id and point
+  `notifyCommand` at it, then restart the service.
+- Scripts or agents that called the removed route or CLI command get 404 / a usage error (exit 2) now.
+
 ## [0.3.1] – 2026-10-15
 
 ### Fixed
+
 - Proton's throttling message "Too many server errors, please try again later" is now treated as rate limiting
   (back off and retry) instead of a permanent failure; such uploads no longer stay failed until the next full run.
 - Removing a two-way pair no longer fails with "FOREIGN KEY constraint failed" when deletions were decided on it.
