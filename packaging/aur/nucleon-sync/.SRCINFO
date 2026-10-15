@@ -19,6 +19,6 @@ pkgbase = nucleon-sync
 	provides = nucleon-sync
 	conflicts = nucleon-sync-bin
 	source = nucleon-sync-0.3.0.tar.gz::https://github.com/flofischerpfuhl-stack/nucleon-sync/archive/refs/tags/v0.3.0.tar.gz
-	sha256sums = SKIP
+	sha256sums = b12d97e042944351b08eea56d23dd9768187491a7ca1b71410fbcb5063ba03fa
 
 pkgname = nucleon-sync
