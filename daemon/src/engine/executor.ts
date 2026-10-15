@@ -374,6 +374,13 @@ export class Executor extends EventEmitter {
       for (const j of batch) {
         if (j.state !== 'running') continue;
         this.transition(j, { state: 'done', finished_at: this.now(), last_error: null, error_class: null });
+        // older failed attempts for the same file are superseded by this success (keeps the failed counter honest)
+        if (j.entry_id != null)
+          this.d.db
+            .prepare(
+              "UPDATE jobs SET state = 'cancelled', last_error = 'superseded: a later job succeeded' WHERE entry_id = ? AND state = 'failed' AND id <> ?",
+            )
+            .run(j.entry_id, j.id);
         const pl = payloadOf(j);
         if (pl.then)
           insertJob(this.d.db, {
