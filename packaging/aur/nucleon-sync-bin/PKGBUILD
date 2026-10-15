@@ -26,8 +26,8 @@ options=('!strip' '!debug')
 source=("${_pkgname}-${pkgver}-linux-x64.tar.gz::${url}/releases/download/v${pkgver}/${_pkgname}-${pkgver}-linux-x64.tar.gz"
         "${_pkgname}-${pkgver}-src.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
 # filled in at release time (updpkgsums) once the v0.4.0 tag and release files exist
-sha256sums=('SKIP'
-            'SKIP')
+sha256sums=('f3084d3f04c7636f32909817f6c6961531f79fd31528e43b0f873edb86fbc580'
+            '19152a430837a710c7f79f1ca91813b05a054f3b6cf1b74dda62c64b6092ea79')
 
 package() {
   local app="${srcdir}/${_pkgname}-${pkgver}-linux-x64"

@@ -24,7 +24,7 @@ provides=("${pkgname}")
 conflicts=("${pkgname}-bin")
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
 # filled in at release time (updpkgsums) once the v0.4.0 tag and release files exist
-sha256sums=('SKIP')
+sha256sums=('19152a430837a710c7f79f1ca91813b05a054f3b6cf1b74dda62c64b6092ea79')
 
 build() {
   cd "${pkgname}-${pkgver}"
