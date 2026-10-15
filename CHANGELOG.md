@@ -4,9 +4,13 @@ All notable changes to Nucleon Sync. The format follows [Keep a Changelog](https
 versions follow [Semantic Versioning](https://semver.org/). Until 1.0, minor versions may change the local API,
 `daemon.json` or the CLI's JSON output; such changes are listed here.
 
-## [0.4.0] – unreleased
+## [0.4.0] – 2026-10-15
 
 Minor version because the settings, the local API and the CLI change (see "Upgrading").
+
+### Added
+
+- A visible "Add folder" button on each account card in the Overview (opens the pair wizard); the Folders screen's "+ Pair" button is now "Add folder" too.
 
 ### Removed
 

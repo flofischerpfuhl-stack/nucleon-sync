@@ -115,3 +115,15 @@ export const SHORTCUTS = {
 
 /** custom DOM events screens listen to */
 export const KEY_EVENTS = { search: 'ps:search', newPair: 'ps:new-pair' } as const;
+
+/** Opens the pair wizard on the Folders screen, also when that screen is not mounted yet (it picks the flag up). */
+let pendingNewPair = false;
+export function requestNewPair(): void {
+  pendingNewPair = true;
+  window.dispatchEvent(new Event(KEY_EVENTS.newPair));
+}
+export function takePendingNewPair(): boolean {
+  const p = pendingNewPair;
+  pendingNewPair = false;
+  return p;
+}

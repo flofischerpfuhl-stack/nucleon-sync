@@ -275,6 +275,16 @@ test.describe('demo fixtures', () => {
     await chip(t.activity.range.all).click();
   });
 
+  test('overview: "Ordner hinzufügen" on an account card opens the pair wizard', async () => {
+    const { page } = ui;
+    await page.locator('[data-nav="overview"]').click();
+    const btn = page.locator('[data-testid^="add-folder-"]').first();
+    await expect(btn).toHaveText(t.folders.addPair);
+    await btn.click();
+    await expect(page.getByTestId('wizard-next')).toBeVisible();
+    await page.locator('[data-nav="overview"]').click();
+  });
+
   test('#6 pair wizard: "Weiter" stays disabled until the local folder check finished', async () => {
     const { page } = ui;
     await page.locator('[data-nav="folders"]').click();

@@ -56,7 +56,7 @@ for (const theme of ['dark', 'light'] as const) {
         await page.locator('[data-path="Projects/nucleon-sync"] button[aria-expanded]').click();
         await page.locator('[data-path="Old-Archive"] [role=checkbox]').click();
         await shot(page, 'folders-changes-dark');
-        await page.getByRole('button', { name: 'Pair', exact: true }).click();
+        await page.getByTestId('add-pair').click();
         // unapplied selection changes: the app asks first (fix-ui-round1 #7)
         await expect(page.getByTestId('choice-dialog')).toBeVisible();
         await shot(page, 'unsaved-dialog-dark');

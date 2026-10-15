@@ -310,7 +310,7 @@ export const de: Strings = {
   } satisfies Record<RunTrigger, string>,
   folders: {
     pair: 'Paar',
-    addPair: '+ Paar',
+    addPair: 'Ordner hinzufügen',
     direction: 'Richtung',
     enabled: 'Aktiv',
     uploadLocalNew: 'Neue Dateien vom PC hochladen',

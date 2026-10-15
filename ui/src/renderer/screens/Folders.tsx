@@ -9,7 +9,7 @@ import { Icon } from '../components/Icon.tsx';
 import { Button, Checkbox, Empty, PauseControl, Pill, Spinner, Switch } from '../components/ui.tsx';
 import { toApiError } from '../errors.ts';
 import { fmtBytes } from '../format.ts';
-import { KEY_EVENTS, rowKeys } from '../components/a11y.ts';
+import { KEY_EVENTS, rowKeys, takePendingNewPair } from '../components/a11y.ts';
 import { t } from '../i18n/index.ts';
 import {
   applyChanges,
@@ -83,7 +83,11 @@ export function Folders() {
   const openRef = useRef(openWizard);
   openRef.current = openWizard;
   useEffect(() => {
-    const h = () => void openRef.current();
+    const h = () => {
+      takePendingNewPair();
+      void openRef.current();
+    };
+    if (takePendingNewPair()) void openRef.current();
     window.addEventListener(KEY_EVENTS.newPair, h);
     return () => window.removeEventListener(KEY_EVENTS.newPair, h);
   }, []);

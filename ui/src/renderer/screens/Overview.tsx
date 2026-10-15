@@ -4,6 +4,7 @@ import type { AccountDto, PairDto, StatusDto, StoragePoolDto } from '@nucleon-sy
 
 import { ActivityLine } from '../components/ActivityRow.tsx';
 import { Icon } from '../components/Icon.tsx';
+import { requestNewPair } from '../components/a11y.ts';
 import {
   Avatar,
   Button,
@@ -300,6 +301,17 @@ function AccountCard({
           onClick={() => void api.sync({ accountId: a.id }).catch(toastError)}
         >
           {t.actions.sync}
+        </Button>
+        <Button
+          small
+          icon="plus"
+          data-testid={`add-folder-${a.id}`}
+          onClick={() => {
+            requestNewPair();
+            goTo('folders');
+          }}
+        >
+          {t.folders.addPair.replace('+ ', '')}
         </Button>
         <Button
           small

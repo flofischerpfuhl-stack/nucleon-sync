@@ -300,7 +300,7 @@ export const en = {
   } satisfies Record<RunTrigger, string>,
   folders: {
     pair: 'Pair',
-    addPair: '+ Pair',
+    addPair: 'Add folder',
     direction: 'Direction',
     enabled: 'Active',
     uploadLocalNew: 'Upload new files from this PC',
