@@ -354,6 +354,11 @@ export class PairsService {
     try {
       db.prepare('UPDATE runs SET pair_id = NULL WHERE pair_id = ?').run(id);
       db.prepare("DELETE FROM pause_timers WHERE scope = 'pair' AND target = ?").run(String(id));
+      // held/decided two-way deletions point at the pair's jobs (no cascade on job_id)
+      db.prepare('DELETE FROM pending_deletions WHERE entry_id IN (SELECT id FROM entries WHERE pair_id = ?)').run(id);
+      db.prepare(
+        'UPDATE pending_deletions SET job_id = NULL WHERE job_id IN (SELECT id FROM jobs WHERE pair_id = ?)',
+      ).run(id);
       db.prepare('DELETE FROM jobs WHERE pair_id = ?').run(id);
       db.prepare('DELETE FROM pairs WHERE id = ?').run(id); // cascades entries, rules, remote_folders, scans, brakes, ...
       db.exec('COMMIT');
