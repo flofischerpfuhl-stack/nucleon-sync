@@ -83,8 +83,9 @@ official CLI can.
 
 ### Notifications
 
-- The optional Telegram bot token is stored in the keyring (or the encrypted file store), set through a route that
-  only the dashboard's token may use. The API never returns it; it is scrubbed from logs and error messages.
+- Beyond desktop notifications, the only channel is the optional `notifyCommand`; the app stores no third-party
+  credentials for notifications (a script you point it at keeps its own secrets). Since 0.4.0 a chat bot token left
+  behind by 0.3.x is deleted from the keyring or the encrypted file store once at startup.
 - The optional `notifyCommand` is read only from `~/.config/nucleon-sync/daemon.json`. It cannot be set over the API,
   so an agent token cannot make the daemon run commands. It is started without a shell, with a 30-second timeout.
 

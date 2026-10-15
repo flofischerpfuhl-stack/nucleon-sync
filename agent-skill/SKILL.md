@@ -184,12 +184,13 @@ nucleon-sync --agent NAME pairs remove 3 --yes --json
 ## Notifications
 
 ```bash
-nucleon-sync notifications --json   # what the Telegram bot / notify command sent: [{ts, channel, key, message, ok}]
+nucleon-sync notifications --json   # what the notify command sent: [{ts, channel, key, message, ok}]
 ```
 
-The user configures the channels (Settings → Notifications in the dashboard, `notifyCommand` in `daemon.json`).
-Change notification settings only when the user asks, and never handle the bot token (the user enters it in the
-dashboard). Problems are sent right away, pending decisions once a day.
+The user configures notifications: desktop notifications in Settings → Notifications, anything else (phone push,
+chat bot, mail) through their own `notifyCommand` script in `~/.config/nucleon-sync/daemon.json`. Change
+notification settings only when the user asks; never edit `daemon.json` or the user's notify script on your own, and
+never handle the secrets such a script uses. Problems are sent right away, pending decisions once a day.
 
 ## Status bar and dashboard
 

@@ -38,7 +38,7 @@ careful with deletions, and gentle on Proton's servers.
   anything destructive an agent asks for waits for your approval in the dashboard. A ready-made agent skill is in
   [`agent-skill/SKILL.md`](agent-skill/SKILL.md).
 - **Status bar** module for Waybar and the Omarchy shell, plus Omarchy menu entries.
-- **Notifications**: desktop notifications, optionally a Telegram bot of your own, or any command you like.
+- **Notifications**: desktop notifications, and any command you like (phone push, chat bot, mail).
 
 ## How it works
 
@@ -155,16 +155,37 @@ it off).
 ## Notifications
 
 - **Desktop notifications** from the dashboard.
-- **Telegram bot of your own**: create a bot with @BotFather, then enter its token and your chat id in Settings →
-  Notifications. The token is stored in your keyring and never shown again.
-- **Any command**: set `"notifyCommand": ["/path/to/script"]` in `~/.config/nucleon-sync/daemon.json`. It runs
-  without a shell on every notification, with `NUCLEON_SYNC_EVENT` (`notice`, `digest`, `test`),
-  `NUCLEON_SYNC_SEVERITY`, `NUCLEON_SYNC_KEY`, `NUCLEON_SYNC_TITLE`, `NUCLEON_SYNC_BODY`, `NUCLEON_SYNC_TEXT`,
-  `NUCLEON_SYNC_ACCOUNT_ID` and `NUCLEON_SYNC_ACCOUNT_NAME` in its environment — use it for mail, ntfy, Matrix or
-  your own assistant. It can only be set in that file, not over the API.
+- **Your own command** for everything else (phone push, a chat bot, mail, your own assistant): set `notifyCommand` in
+  `~/.config/nucleon-sync/daemon.json` and restart the service (`systemctl --user restart nucleon-sync`):
+
+  ```json
+  { "notifyCommand": ["/home/you/.local/bin/nucleon-notify"] }
+  ```
+
+  The command is an argv array, started without a shell, with a 30 s timeout. It gets `NUCLEON_SYNC_EVENT` (`notice`,
+  `digest`, `test`), `NUCLEON_SYNC_SEVERITY` (`info`, `warn`, `error`), `NUCLEON_SYNC_KEY`, `NUCLEON_SYNC_TITLE`,
+  `NUCLEON_SYNC_BODY`, `NUCLEON_SYNC_TEXT` (title and body in one message), `NUCLEON_SYNC_ACCOUNT_ID` and
+  `NUCLEON_SYNC_ACCOUNT_NAME` in its environment. Exit code 0 counts as sent; otherwise the first lines of stderr show
+  up in Settings → Notifications. It can only be set in that file, not over the API.
 
 Problems are sent right away (once per kind within the configured interval); conflicts, pending deletions and files
-found in Proton come in one daily summary.
+found in Proton come in one daily summary. Try it with Settings → Notifications → Send test, or
+`nucleon-sync notifications test --ui-token`.
+
+An example script (`chmod 700`) that sends to [ntfy](https://ntfy.sh) or to a Telegram bot of your own — keep the
+part you need:
+
+```sh
+#!/bin/sh
+# ntfy: use a topic nobody can guess
+curl -fsS --max-time 20 -H "Title: $NUCLEON_SYNC_TITLE" -d "$NUCLEON_SYNC_BODY" https://ntfy.sh/my-secret-topic
+
+# Telegram: create a bot with @BotFather, send it a message, put its token into a 0600 file and use your chat id.
+# The URL with the token goes to curl on stdin, so the token never shows up in the process list.
+token=$(cat ~/.config/nucleon-notify/bot-token)
+printf 'url = "https://api.telegram.org/bot%s/sendMessage"\n' "$token" |
+  curl -fsS --max-time 20 -K - -o /dev/null --data-urlencode chat_id=123456789 --data-urlencode "text=$NUCLEON_SYNC_TEXT"
+```
 
 ## Limits of the official CLI (and what Nucleon Sync does about them)
 
@@ -182,7 +203,7 @@ found in Proton come in one daily summary.
   in their names are uploaded through a temporary link), names starting with `-`, thumbnail generation failing for
   some formats, Proton Docs that cannot be downloaded as files.
 - **Telemetry.** The official CLI binary is Proton's; it contains Proton's own crash reporting. Nucleon Sync itself
-  sends nothing anywhere except to the notification channels you configure.
+  sends nothing anywhere except to your own notify command, if you set one.
 
 ## Configuration and files
 
@@ -191,7 +212,7 @@ found in Proton come in one daily summary.
 | `~/.config/nucleon-sync/`                | `daemon.json` (optional), API tokens (0600), agent tokens     |
 | `~/.local/state/nucleon-sync/`           | `state.sqlite`, per-account CLI worker dirs, download staging |
 | `$XDG_RUNTIME_DIR/nucleon-sync/api.sock` | local API (0600)                                              |
-| keyring (Secret Service)                 | one Proton session per account, the Telegram bot token        |
+| keyring (Secret Service)                 | one Proton session per account                                |
 
 Optional `daemon.json` keys (read when the service starts):
 

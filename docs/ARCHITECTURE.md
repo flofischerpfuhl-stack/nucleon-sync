@@ -26,7 +26,7 @@ CLI; it does not use a reverse-engineered API.
 │                              ├─ Remote crawler (list via CLI: hot + rotating slice | full)        │
 │                              ├─ Planner (3-way diff → jobs, moves/adoption, conflicts, brakes)    │
 │                              ├─ Job queue (SQLite, resumable) → Executor (verify → act → verify)  │
-│                              ├─ Notifier (Telegram bot, notify command; desktop via the UI)       │
+│                              ├─ Notifier (notify command; desktop via the UI)                     │
 │                              └─ CLI pool: per account N × ReplWorker ─┐                           │
 │ State DB: ~/.local/state/nucleon-sync/state.sqlite (node:sqlite, WAL) │                           │
 └───────────────────────────────────────────────────────────────────────┼───────────────────────────┘
@@ -87,7 +87,7 @@ nucleon-sync/
 │  ├─ src/db/                   schema.sql, migrations/, repositories
 │  ├─ src/engine/               scanner, crawler, planner, decision tables, queue, executor, scheduler, limiter
 │  ├─ src/accounts/             accounts, pairs, storage, settings, pause timers, maintenance, doctor, keyring
-│  ├─ src/notify/               notifier, Telegram transport, app secrets (bot token)
+│  ├─ src/notify/               notifier (notify command), one-time clean-up of a 0.3.x bot token
 │  └─ test/                     vitest: unit, scenarios against the mock CLI, contract, API, robustness
 ├─ mock-cli/       behavioural fake of proton-drive 0.9 (REPL + one-shot) and a seed tool
 ├─ secret-shim/    pass-compatible per-account credential shim (libsecret / encrypted file / test file)
@@ -510,8 +510,7 @@ Route table: `daemon/src/api/routes.ts`.
 | GET                  | `/v1/doctor`                                                   |                                              | `DoctorCheck[]`                                     | read                                                                                           |
 | GET                  | `/v1/notifications?limit=`                                     |                                              | `NotificationLogItem[]`                             | read                                                                                           |
 | GET                  | `/v1/notifications/config`                                     |                                              | `NotificationConfigDto`                             | read                                                                                           |
-| PUT                  | `/v1/notifications/telegram-token`                             | `{token}` (`null` removes it)                | `{ok}`                                              | ui                                                                                             |
-| POST                 | `/v1/notifications/test`                                       | `{channel?: 'telegram' \| 'command'}`        | `NotificationTestResult[]`                          | ui                                                                                             |
+| POST                 | `/v1/notifications/test`                                       | `{channel?: 'command'}`                      | `NotificationTestResult[]`                          | ui                                                                                             |
 | GET                  | `/v1/maintenance/summary`                                      |                                              | `MaintenanceSummaryDto`                             | read                                                                                           |
 | POST                 | `/v1/maintenance/digest-backfill`                              | `{pairId, relPrefix?, limit?}`               | `{runId}`                                           | destructive                                                                                    |
 | POST                 | `/v1/maintenance/empty-trash`                                  | `{accountId, confirmToken?}`                 | `{ok}`                                              | destructive                                                                                    |
@@ -793,21 +792,23 @@ Rotation is needed because a folder's `modificationTime` does not change when it
 
 - **Desktop**: the dashboard turns SSE `notice` events into desktop notifications (setting
   `notifications.desktop`), de-duplicated per key. A pending agent approval also produces a desktop notification.
-- **Daemon channels** (`notify/notifier.ts`), both optional:
-  - **Telegram bot of your own**: settings `notifications.telegram = {enabled, chatId}`; the bot token is stored in
-    the keyring (`service=nucleon-sync`, `kind=telegram-bot-token`; with `encfile` an encrypted file
-    `secrets/_telegram-bot-token.enc`) via `PUT /v1/notifications/telegram-token` (UI token only). The token is never
-    returned by the API (`GET /v1/notifications/config` only reports `tokenSet`) and is scrubbed from logs and errors.
-    Bot API `sendMessage`; success only on HTTP 200 with `"ok": true`.
-  - **`notifyCommand`** in daemon.json: an argv array started without a shell, 30 s timeout, with the event in the
-    environment: `NUCLEON_SYNC_EVENT` (`notice` | `digest` | `test`), `NUCLEON_SYNC_SEVERITY`, `NUCLEON_SYNC_KEY`,
-    `NUCLEON_SYNC_TITLE`, `NUCLEON_SYNC_BODY`, `NUCLEON_SYNC_TEXT` (title + body), `NUCLEON_SYNC_ACCOUNT_ID`,
-    `NUCLEON_SYNC_ACCOUNT_NAME`. It is configurable only in the file, not over the API, so an agent token cannot make
-    the daemon run commands. Use it for mail, ntfy, a chat bridge or another agent.
-- **Rules** (both daemon channels): warn/error notices go out at once, de-duplicated per notice key within
+- **Daemon channel** (`notify/notifier.ts`), optional: **`notifyCommand`** in daemon.json, an argv array started
+  without a shell, 30 s timeout, with the event in the environment: `NUCLEON_SYNC_EVENT` (`notice` | `digest` |
+  `test`), `NUCLEON_SYNC_SEVERITY`, `NUCLEON_SYNC_KEY`, `NUCLEON_SYNC_TITLE`, `NUCLEON_SYNC_BODY`, `NUCLEON_SYNC_TEXT`
+  (title + body), `NUCLEON_SYNC_ACCOUNT_ID`, `NUCLEON_SYNC_ACCOUNT_NAME`. Exit code 0 counts as sent; otherwise the
+  exit code and the start of stderr are logged. It is configurable only in the file, not over the API, so an agent
+  token cannot make the daemon run commands. Use it for phone push (ntfy), a chat bot, mail or another agent; the
+  README has an example script. `GET /v1/notifications/config` reports `{command: {configured, program}}` (the
+  program's base name only).
+- **Removed in 0.4.0**: the built-in chat bot channel of 0.3.x (its own keys under `notifications` and a bot token in
+  the keyring or the encrypted file store). Migration 009 drops those settings and the channel's log rows;
+  `notify/legacyToken.ts` deletes a stored bot token once at startup, best effort (`secret-tool clear` with a timeout
+  for the libsecret backend, the `.enc` file for `encfile`), never failing the start, and records the attempt in
+  `meta` (`cleanup:legacy-bot-token`). `PUT /v1/settings` answers 400 for unknown keys under `notifications`.
+- **Rules**: warn/error notices go out at once, de-duplicated per notice key within
   `notifications.minIntervalMinutes` (default 360); pending decisions (new conflicts, pending deletions, adoption
   proposals) only go into one daily digest after `dailyHour`; info notices never. Every attempt is logged in the
-  `notifications` table (`GET /v1/notifications`), never with the token. `POST /v1/notifications/test` (UI token)
+  `notifications` table (`GET /v1/notifications`, channel `command`). `POST /v1/notifications/test` (UI token)
   sends a test message.
 
 ---
@@ -830,7 +831,6 @@ All keys are optional and read at daemon start (restart the service after a chan
 | `requiredMounts`  | absolute paths that must be mount points (`doctor` error otherwise), e.g. a data disk holding the pair roots                                                                |
 | `protectedPaths`  | absolute local paths that are never synced: pairs overlapping them are refused and the rule matcher skips them                                                              |
 | `notifyCommand`   | argv array run on every notification (§12)                                                                                                                                  |
-| `telegramApiBase` | Telegram Bot API base URL (tests point it at a fake endpoint)                                                                                                               |
 
 Example:
 
@@ -846,7 +846,7 @@ Example:
 ### 13.2 Settings (`GET/PUT /v1/settings`)
 
 `SettingsDto`: `schedule`, `transfer` (workers, bandwidth, quiet hours, thumbnails, max file size), `notifications`
-(desktop, Telegram, minimum interval), `storagePoolBytes` (shared storage plan size to display), `globalExcludes`.
+(desktop, minimum interval), `storagePoolBytes` (shared storage plan size to display), `globalExcludes`.
 Stored per section; every change calls `engine.reload()`. Pair options (`PATCH /v1/pairs/:id`) and account fields
 (`PATCH /v1/accounts/:id`) are separate.
 
