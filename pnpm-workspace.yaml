@@ -1,0 +1,13 @@
+packages:
+  - shared
+  - daemon
+  - ui
+  - mock-cli
+  - secret-shim
+
+# Packages allowed to run install scripts (electron downloads its binary, esbuild its native binary).
+allowBuilds:
+  electron: true
+  esbuild: true
+  # electron-builder pulls this Windows installer helper in; its install script is not needed on Linux
+  electron-winstaller: false

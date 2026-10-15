@@ -1,0 +1,21 @@
+// Waybar module for Nucleon Sync (Omarchy 3, plain Hyprland, Sway, …). Omarchy 4 has no Waybar: use
+// `nucleon-sync-omarchy install` instead, which adds the same module to the Omarchy shell bar.
+//
+// Add this file to your Waybar config with  "include": ["~/.config/waybar/nucleon-sync.jsonc"]  and put
+// "custom/nucleon-sync" into "modules-right". Styles: waybar.css (classes idle, syncing, paused, throttled,
+// conflicts, error, stopped).
+{
+  "custom/nucleon-sync": {
+    // cheap: `cat` of the JSON file the daemon keeps up to date (≤ 1 s after every change)
+    "exec": "nucleon-sync-bar",
+    "interval": 5,
+    // alternative without polling (one long-running process, instant):  "exec": "nucleon-sync bar --watch",
+    // and remove "interval"
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": true,
+    "on-click": "nucleon-sync-gui --open",
+    "on-click-right": "nucleon-sync pause --toggle",
+    "on-click-middle": "nucleon-sync sync"
+  }
+}

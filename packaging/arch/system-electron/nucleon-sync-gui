@@ -1,0 +1,6 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Nucleon Sync dashboard on the system Electron (AUR package `nucleon-sync`, built from source).
+export NUCLEON_SYNC_DAEMON_DIR=/usr/lib/nucleon-sync/daemon
+export NUCLEON_SYNC_LAUNCHER=/usr/bin/nucleon-sync-gui
+exec /usr/bin/electron44 /usr/lib/nucleon-sync/app --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations "$@"

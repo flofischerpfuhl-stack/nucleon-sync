@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Template for a source checkout: rendered by scripts/install-user.sh to ~/.config/systemd/user/nucleon-sync.service
+# (@ROOT@ = repository path, @NODE@ = node binary). Installed but NOT enabled unless install-user.sh --enable.
+# Packages (AUR, AppImage wizard) ship their own unit; see packaging/arch/nucleon-sync.service.
+[Unit]
+Description=Nucleon Sync daemon (Proton Drive sync, from a source checkout)
+Documentation=https://github.com/flofischerpfuhl-stack/nucleon-sync
+# The keyring (Secret Service) and the network come up with the graphical session.
+After=graphical-session.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=@NODE@ @ROOT@/daemon/src/main.ts
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=30
+# Gentle on disks and the desktop: hashing and walking large trees must not make the computer sluggish.
+Nice=10
+IOSchedulingClass=idle
+Environment=NUCLEON_SYNC_LOG_LEVEL=info
+# Writes to Proton (and downloads into your folders) are refused unless this is 1: "planning mode". Set it to 1 after
+# `nucleon-sync doctor` and a look at the first planned run (or let the setup wizard install its unit, which allows writes).
+Environment=NUCLEON_SYNC_ALLOW_WRITES=0
+# Hardening that keeps your folders, the keyring (D-Bus) and the CLI working: the OS is read-only, home stays writable.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+LockPersonality=yes
+
+[Install]
+WantedBy=default.target

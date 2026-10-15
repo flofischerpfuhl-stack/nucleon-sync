@@ -1,0 +1,15 @@
+{
+  "name": "@nucleon-sync/mock-cli",
+  "version": "0.3.0",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "description": "Behavioural fake of the proton-drive CLI 0.9.0 for tests and UI development",
+  "bin": {
+    "mock-proton-drive": "./bin/mock-proton-drive",
+    "mock-proton-drive-seed": "./bin/mock-proton-drive-seed"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

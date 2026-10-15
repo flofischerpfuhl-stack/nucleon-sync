@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# User unit of the AUR package `nucleon-sync` (built from source, runs on the system Electron's Node runtime).
+# The setup wizard may write ~/.config/systemd/user/nucleon-sync.service, which takes precedence.
+[Unit]
+Description=Nucleon Sync daemon (Proton Drive sync)
+Documentation=https://github.com/flofischerpfuhl-stack/nucleon-sync
+After=graphical-session.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=ELECTRON_RUN_AS_NODE=1
+Environment=NUCLEON_SYNC_ALLOW_WRITES=1
+Environment=NUCLEON_SYNC_NODE=/usr/bin/electron44
+Environment=NUCLEON_SYNC_SHIM_DIR=/usr/lib/nucleon-sync/daemon/shim
+ExecStart=/usr/bin/electron44 /usr/lib/nucleon-sync/daemon/nucleon-syncd.mjs
+Restart=on-failure
+RestartSec=15
+Nice=10
+IOSchedulingClass=idle
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

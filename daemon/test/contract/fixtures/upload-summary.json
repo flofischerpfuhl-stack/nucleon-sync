@@ -1,0 +1,7 @@
+{
+  "transferredItems": 2,
+  "transferredBytes": 1153027,
+  "skippedItems": 1,
+  "failedItems": 1,
+  "failures": [{ "name": "Angebot.xlsx", "error": "Name conflict on \"Angebot.xlsx\" (file) already exists" }]
+}

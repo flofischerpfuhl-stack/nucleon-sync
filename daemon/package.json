@@ -1,0 +1,19 @@
+{
+  "name": "@nucleon-sync/daemon",
+  "version": "0.3.0",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "description": "Headless Proton Drive sync daemon (systemd user service) + nucleon-sync CLI client",
+  "bin": {
+    "nucleon-syncd": "./bin/nucleon-syncd",
+    "nucleon-sync": "./bin/nucleon-sync"
+  },
+  "scripts": {
+    "start": "node src/main.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@nucleon-sync/shared": "workspace:*"
+  }
+}

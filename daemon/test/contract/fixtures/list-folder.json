@@ -1,0 +1,198 @@
+[
+  {
+    "uid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~wz92g2GhztYrLzpQFHnbBh-WKDMuAWRpkTZYahM29KS2ju1S4ol07xQV-xxYhn4sGNJi2fd4q0E3ndA2awh1dW==",
+    "parentUid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~AdqMdjZWUXZegydbJ-61z5iWmlRmPqRhOcWLswgCvToeCtn0TIkJXvAIA9bDTyFMyXZn-cjEQERcdn3N81buDW==",
+    "name": {
+      "ok": true,
+      "value": "01_Rechnungen"
+    },
+    "keyAuthor": {
+      "ok": true,
+      "value": "alex@example.test"
+    },
+    "nameAuthor": {
+      "ok": true,
+      "value": "alex@example.test"
+    },
+    "directRole": "admin",
+    "ownedBy": {
+      "email": "alex@example.test"
+    },
+    "type": "folder",
+    "isShared": false,
+    "isSharedByUrl": false,
+    "creationTime": "2024-01-04T16:04:04.000Z",
+    "modificationTime": "2024-01-04T16:04:04.000Z",
+    "folder": {
+      "isImported": false
+    },
+    "treeEventScopeId": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP=="
+  },
+  {
+    "uid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~P6syoccDYHeSaIpqFzVzAZngdCEOsbR2a8Pa_C48H_umtV4MZslZfMVNxsRr-Sq2-R7XWipWjOA8myZMu7-Zam==",
+    "parentUid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~AdqMdjZWUXZegydbJ-61z5iWmlRmPqRhOcWLswgCvToeCtn0TIkJXvAIA9bDTyFMyXZn-cjEQERcdn3N81buDW==",
+    "name": {
+      "ok": true,
+      "value": "Kündigung Müller.docx"
+    },
+    "keyAuthor": {
+      "ok": true,
+      "value": "alex@example.test"
+    },
+    "nameAuthor": {
+      "ok": true,
+      "value": "alex@example.test"
+    },
+    "directRole": "admin",
+    "ownedBy": {
+      "email": "alex@example.test"
+    },
+    "type": "file",
+    "mediaType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "isShared": false,
+    "isSharedByUrl": false,
+    "creationTime": "2026-02-13T09:13:35.000Z",
+    "modificationTime": "2026-02-13T09:13:44.000Z",
+    "totalStorageSize": 28019,
+    "activeRevision": {
+      "uid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~P6syoccDYHeSaIpqFzVzAZngdCEOsbR2a8Pa_C48H_umtV4MZslZfMVNxsRr-Sq2-R7XWipWjOA8myZMu7-Zam==~AwdvqVfU1M7RbiXG379Gx5ZGg_8slAccW_Lw20t_WHdKkRFnajLXp9jIdyhecqSefY-XDI7T5KlNXpSWqrSOT0==",
+      "state": "active",
+      "creationTime": "2026-10-09T10:02:04.000Z",
+      "contentAuthor": {
+        "ok": true,
+        "value": "alex@example.test"
+      },
+      "storageSize": 14010,
+      "isImported": false,
+      "claimedSize": 13960,
+      "claimedModificationTime": "2022-06-07T07:03:30.116Z",
+      "claimedDigests": {
+        "sha1": "DA59E0DC4F3B956885C455C619314DAD046B6049",
+        "sha1Verified": false
+      },
+      "claimedAdditionalMetadata": {}
+    },
+    "treeEventScopeId": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP=="
+  },
+  {
+    "uid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~dWWX-B-KQVAqhxyYBybM6HuugMgjwLAFTOuDn6ZDDsQlROue6bu0C4SoHIpF-9xSGerGLXNhIlAr2lxXucLfpK==",
+    "parentUid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~AdqMdjZWUXZegydbJ-61z5iWmlRmPqRhOcWLswgCvToeCtn0TIkJXvAIA9bDTyFMyXZn-cjEQERcdn3N81buDW==",
+    "name": {
+      "ok": true,
+      "value": "Reisekosten.xlsx"
+    },
+    "keyAuthor": {
+      "ok": true,
+      "value": "alex@example.test"
+    },
+    "nameAuthor": {
+      "ok": true,
+      "value": "alex@example.test"
+    },
+    "directRole": "admin",
+    "ownedBy": {
+      "email": "alex@example.test"
+    },
+    "type": "file",
+    "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "isShared": false,
+    "isSharedByUrl": false,
+    "creationTime": "2024-01-04T16:10:00.000Z",
+    "modificationTime": "2024-01-04T16:10:00.000Z",
+    "totalStorageSize": 12030,
+    "activeRevision": {
+      "uid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~dWWX-B-KQVAqhxyYBybM6HuugMgjwLAFTOuDn6ZDDsQlROue6bu0C4SoHIpF-9xSGerGLXNhIlAr2lxXucLfpK==~n_hVzJqJX21lD4RjPqzUelu3tOe8CFezMRN4xz0dkH2ahiWUsCAvCAd-8TilX1FnZs-kof8aRvPGaYO1Nm8d33==",
+      "state": "active",
+      "creationTime": "2024-01-04T16:10:00.000Z",
+      "contentAuthor": {
+        "ok": true,
+        "value": "alex@example.test"
+      },
+      "storageSize": 12030,
+      "isImported": false,
+      "claimedSize": 11966,
+      "claimedModificationTime": "2016-09-13T18:09:46.000Z",
+      "claimedDigests": {},
+      "claimedAdditionalMetadata": {}
+    },
+    "treeEventScopeId": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP=="
+  },
+  {
+    "uid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~cD744t96vSOdXpGQ1mq27L2zaCoLJA_jtYspvbREMZFnQVzeCG4yIbmOR18NTGiU8jf3syxk_7c32rgyS-kpEL==",
+    "parentUid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~AdqMdjZWUXZegydbJ-61z5iWmlRmPqRhOcWLswgCvToeCtn0TIkJXvAIA9bDTyFMyXZn-cjEQERcdn3N81buDW==",
+    "name": {
+      "ok": false,
+      "error": "Failed to decrypt node name"
+    },
+    "keyAuthor": {
+      "ok": true,
+      "value": "alex@example.test"
+    },
+    "nameAuthor": {
+      "ok": false,
+      "error": "signature"
+    },
+    "directRole": "admin",
+    "ownedBy": {
+      "email": "alex@example.test"
+    },
+    "type": "file",
+    "mediaType": "application/octet-stream",
+    "isShared": false,
+    "isSharedByUrl": false,
+    "creationTime": "2023-01-01T00:00:00.000Z",
+    "modificationTime": "2023-01-01T00:00:00.000Z",
+    "totalStorageSize": 100,
+    "activeRevision": {
+      "uid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~qa~qa",
+      "state": "active",
+      "creationTime": "2023-01-01T00:00:00.000Z",
+      "storageSize": 100,
+      "isImported": false,
+      "claimedSize": 36,
+      "claimedModificationTime": null,
+      "claimedDigests": {},
+      "claimedAdditionalMetadata": {}
+    },
+    "treeEventScopeId": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP=="
+  },
+  {
+    "uid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~mzYFVllpEeW0r0N0B9mvkBmDExnpMcG1kRoF8joUZ-daeIhw65uXBUeiOeMluISnl5zE9i_AGg4HIMpRJWINTp==",
+    "parentUid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~AdqMdjZWUXZegydbJ-61z5iWmlRmPqRhOcWLswgCvToeCtn0TIkJXvAIA9bDTyFMyXZn-cjEQERcdn3N81buDW==",
+    "name": {
+      "ok": true,
+      "value": "Notizen"
+    },
+    "keyAuthor": {
+      "ok": true,
+      "value": "alex@example.test"
+    },
+    "nameAuthor": {
+      "ok": true,
+      "value": "alex@example.test"
+    },
+    "directRole": "admin",
+    "ownedBy": {
+      "email": "alex@example.test"
+    },
+    "type": "file",
+    "mediaType": "application/vnd.proton.doc",
+    "isShared": false,
+    "isSharedByUrl": false,
+    "creationTime": "2025-05-05T10:00:00.000Z",
+    "modificationTime": "2025-05-05T10:00:00.000Z",
+    "totalStorageSize": 2048,
+    "activeRevision": {
+      "uid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~z0~z0",
+      "state": "active",
+      "creationTime": "2025-05-05T10:00:00.000Z",
+      "storageSize": 2048,
+      "isImported": false,
+      "claimedSize": null,
+      "claimedModificationTime": null,
+      "claimedDigests": {},
+      "claimedAdditionalMetadata": {}
+    },
+    "treeEventScopeId": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP=="
+  }
+]

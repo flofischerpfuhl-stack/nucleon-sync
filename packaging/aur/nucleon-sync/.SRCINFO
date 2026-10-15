@@ -1,0 +1,24 @@
+pkgbase = nucleon-sync
+	pkgdesc = Sync folders with Proton Drive (third-party app on the official proton-drive CLI): service, tray dashboard, agent CLI
+	pkgver = 0.3.0
+	pkgrel = 1
+	url = https://github.com/flofischerpfuhl-stack/nucleon-sync
+	arch = any
+	license = GPL-3.0-or-later
+	makedepends = nodejs>=26
+	makedepends = pnpm
+	depends = proton-drive-cli
+	depends = electron44
+	depends = libsecret
+	depends = systemd
+	depends = hicolor-icon-theme
+	optdepends = gnome-keyring: Secret Service provider for the Proton session (Hyprland, GNOME)
+	optdepends = kwallet: Secret Service provider for the Proton session (KDE)
+	optdepends = libnotify: desktop notifications
+	optdepends = jq: nucleon-sync-omarchy (Omarchy bar and menu integration)
+	provides = nucleon-sync
+	conflicts = nucleon-sync-bin
+	source = nucleon-sync-0.3.0.tar.gz::https://github.com/flofischerpfuhl-stack/nucleon-sync/archive/refs/tags/v0.3.0.tar.gz
+	sha256sums = SKIP
+
+pkgname = nucleon-sync

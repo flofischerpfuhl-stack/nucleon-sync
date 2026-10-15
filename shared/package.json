@@ -1,0 +1,13 @@
+{
+  "name": "@nucleon-sync/shared",
+  "version": "0.3.0",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

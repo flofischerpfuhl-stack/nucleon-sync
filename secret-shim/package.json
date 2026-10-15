@@ -1,0 +1,11 @@
+{
+  "name": "@nucleon-sync/secret-shim",
+  "version": "0.3.0",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "description": "pass-compatible per-account keyring shim for the proton-drive CLI",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

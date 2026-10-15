@@ -1,0 +1,4 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-or-later
+# `nucleon-sync` command line client (status, sync, pause, doctor, ...) on the app's bundled Node runtime (Electron).
+ELECTRON_RUN_AS_NODE=1 exec /opt/nucleon-sync/nucleon-sync /opt/nucleon-sync/resources/daemon/nucleon-sync.mjs "$@"

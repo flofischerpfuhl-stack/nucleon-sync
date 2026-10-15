@@ -1,0 +1,9 @@
+dist
+out
+node_modules
+pnpm-lock.yaml
+docs
+build
+# Waybar parses this snippet; prettier would add trailing commas
+packaging/omarchy/waybar-module.jsonc
+ui/test-results

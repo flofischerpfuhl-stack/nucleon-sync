@@ -1,0 +1,30 @@
+name: Feature request
+description: Suggest an idea or an improvement
+labels: ['enhancement']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the situation and what is missing or hard today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How could it work? Mention the dashboard, the CLI (`nucleon-sync`) or both.
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and workarounds
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        Nucleon Sync builds on the official `proton-drive` CLI and asks Proton's servers as little as possible.
+        Features that need a Proton API the CLI does not offer, or much more frequent polling, are usually out of
+        scope.

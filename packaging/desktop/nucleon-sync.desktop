@@ -1,0 +1,12 @@
+# Template: @ROOT@ is replaced by the repo path by scripts/install-user.sh -> ~/.local/share/applications/
+[Desktop Entry]
+Type=Application
+Name=Nucleon Sync
+GenericName=Proton Drive sync
+Comment=Sync folders with Proton Drive (status, activity, folder selection)
+Comment[de]=Ordner mit Proton Drive synchronisieren (Status, Aktivität, Ordnerauswahl)
+Exec=@ROOT@/ui/node_modules/.bin/electron @ROOT@/ui
+Icon=@ROOT@/packaging/icons/hicolor/scalable/apps/nucleon-sync.svg
+Terminal=false
+Categories=Network;FileTransfer;Utility;
+StartupWMClass=Nucleon Sync

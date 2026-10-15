@@ -1,0 +1,58 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-or-later
+# nucleon-sync-bar — status-bar module for the Omarchy 4 shell (command module) and Waybar (custom module).
+#
+# Cheap by design: the nucleon-sync daemon keeps the finished JSON in its runtime dir (bar.json for Waybar,
+# bar-omarchy.json for the Omarchy shell), rewritten on every status change (max. 1/s) and every 15 s. This script
+# only `cat`s it; a file older than one minute means the service is not running.
+#
+#   nucleon-sync-bar [waybar|omarchy]   print the module JSON (default: waybar)
+#   nucleon-sync-bar --is-paused        exit 0 when sync is paused (Omarchy menu "when" conditions)
+#   nucleon-sync-bar --tooltip          print the status text
+#   nucleon-sync-bar --notify           show the status as a desktop notification
+if [ -n "$NUCLEON_SYNC_HOME" ]; then
+  dir="$NUCLEON_SYNC_HOME/run"
+else
+  dir="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/nucleon-sync"
+fi
+waybar="$dir/bar.json"
+omarchy="$dir/bar-omarchy.json"
+
+fresh() { [ -f "$1" ] && [ -n "$(find "$1" -mmin -1 2>/dev/null)" ]; }
+
+tooltip() {
+  if fresh "$omarchy"; then
+    if command -v jq >/dev/null 2>&1; then
+      jq -r .tooltip "$omarchy"
+    else
+      sed -n 's/.*"tooltip":"\(.*\)","class".*/\1/p' "$omarchy" | sed 's/\\n/\n/g'
+    fi
+  else
+    echo "Nucleon Sync: service not running"
+  fi
+}
+
+case "$1" in
+  --is-paused)
+    fresh "$waybar" && grep -q '"alt":"paused"' "$waybar"
+    exit $?
+    ;;
+  --tooltip)
+    tooltip
+    exit 0
+    ;;
+  --notify)
+    notify-send -a "Nucleon Sync" "Nucleon Sync" "$(tooltip | tail -n +2)" 2>/dev/null || tooltip
+    exit 0
+    ;;
+  omarchy) file="$omarchy" ;;
+  *) file="$waybar" ;;
+esac
+
+if fresh "$file"; then
+  cat "$file"
+elif [ "$1" = omarchy ]; then
+  printf '%s\n' '{"text":"󰅤","alt":"stopped","class":"active","tooltip":"Nucleon Sync: service not running\n\nLeft click: open the dashboard"}'
+else
+  printf '%s\n' '{"text":"󰅤","alt":"stopped","class":"stopped","tooltip":"Nucleon Sync: service not running\n\nLeft click: open the dashboard"}'
+fi

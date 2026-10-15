@@ -1,0 +1,94 @@
+name: Bug report
+description: Something does not work as described
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please **remove personal data** before posting: replace your user name, folder and
+        file names, e-mail addresses and account names in paths and logs (e.g. `/home/alex/Documents/…`). Never post
+        tokens, keyring items or files from `~/.config/nucleon-sync/` or `~/.local/state/nucleon-sync/`.
+
+        Security problems: do not open an issue, see SECURITY.md.
+
+        Nucleon Sync is a third-party app and not affiliated with Proton AG; please do not send these reports to
+        Proton support.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Create a backup pair ~/Documents ⇄ /my-files/Laptop/Documents
+        2. Rename a folder locally
+        3. …
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Nucleon Sync version
+      description: First line of `nucleon-sync status` (nucleon-syncd <version>), also shown in the dashboard sidebar.
+      placeholder: 0.3.0
+    validations:
+      required: true
+  - type: input
+    id: cli-version
+    attributes:
+      label: proton-drive version
+      description: Output of `proton-drive --version`.
+      placeholder: Proton Drive CLI cli-drive@0.9.0+…
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Install method
+      options:
+        - AUR nucleon-sync (built from source)
+        - AUR nucleon-sync-bin
+        - AppImage
+        - Source checkout (scripts/install-user.sh or pnpm dev)
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: distro
+    attributes:
+      label: Distribution and desktop
+      placeholder: Arch Linux, Hyprland (Omarchy) / KDE Plasma 6 / GNOME 49
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of `nucleon-sync doctor --json`
+      description: Remove personal paths, e-mail addresses and account names before posting.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log lines
+      description: |
+        From `journalctl --user -u nucleon-sync --since "1 hour ago"` and, if useful, `nucleon-sync activity --json`.
+        Remove personal data.
+      render: text
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I removed personal paths, e-mail addresses and account names from everything above.
+          required: true
+        - label: I searched the existing issues.
+          required: false

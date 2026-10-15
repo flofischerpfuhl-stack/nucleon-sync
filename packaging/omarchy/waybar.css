@@ -1,0 +1,19 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* Nucleon Sync Waybar module (packaging/omarchy/waybar-module.jsonc). Classes = state of the sync service. */
+#custom-nucleon-sync {
+  padding: 0 8px;
+}
+#custom-nucleon-sync.syncing {
+  color: #5aa9ff;
+}
+#custom-nucleon-sync.paused,
+#custom-nucleon-sync.stopped {
+  opacity: 0.6;
+}
+#custom-nucleon-sync.throttled,
+#custom-nucleon-sync.conflicts {
+  color: #f5b041;
+}
+#custom-nucleon-sync.error {
+  color: #ff6b7a;
+}

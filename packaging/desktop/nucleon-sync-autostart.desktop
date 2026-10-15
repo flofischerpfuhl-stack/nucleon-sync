@@ -1,0 +1,14 @@
+# Template: rendered by scripts/install-user.sh -> ~/.config/autostart/nucleon-sync.desktop
+# Starts the dashboard in the tray at login. @HIDDEN@ = true (installed but disabled) unless --enable-autostart.
+[Desktop Entry]
+Type=Application
+Name=Nucleon Sync
+Comment=Start the Nucleon Sync tray icon
+Comment[de]=Nucleon-Sync-Symbol im Infobereich starten
+Exec=@ROOT@/ui/node_modules/.bin/electron @ROOT@/ui --hidden
+Icon=@ROOT@/packaging/icons/hicolor/scalable/apps/nucleon-sync.svg
+Terminal=false
+Hidden=@HIDDEN@
+X-GNOME-Autostart-enabled=@ENABLED@
+X-KDE-autostart-after=panel
+StartupWMClass=Nucleon Sync

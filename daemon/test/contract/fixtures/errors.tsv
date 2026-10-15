@@ -1,0 +1,8 @@
+Path "/x" not supported	not_found
+You need to login first	auth
+Device not found	not_found
+Name conflict on "a.txt" (file) already exists	conflict
+TypeError: fetch failed	transient
+1 item(s) failed to upload	fatal
+Node not found: /devices/Workstation/Documents/x	not_found
+Failed to load session in pass: exit code 1	auth

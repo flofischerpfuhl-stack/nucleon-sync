@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "lib": ["es2024", "dom", "dom.iterable"],
+    "types": ["node"]
+  },
+  "include": ["src", "test"]
+}

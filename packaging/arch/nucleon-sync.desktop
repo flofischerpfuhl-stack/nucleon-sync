@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Nucleon Sync
+GenericName=Proton Drive sync
+GenericName[de]=Proton-Drive-Synchronisation
+Comment=Sync folders with Proton Drive (third-party app using the official CLI)
+Comment[de]=Ordner mit Proton Drive synchronisieren (Drittanbieter-App, nutzt die offizielle CLI)
+Exec=/usr/bin/nucleon-sync-gui %U
+Icon=nucleon-sync
+Terminal=false
+Categories=Utility;Network;FileTransfer;
+Keywords=Proton;Drive;Sync;Backup;Cloud;
+StartupWMClass=Nucleon Sync

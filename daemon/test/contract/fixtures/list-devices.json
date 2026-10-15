@@ -1,0 +1,26 @@
+[
+  {
+    "uid": "F7ul6rhPWNZLLCjZz7XpcuqB1Fh3IWJZ8G503ixpR2LZFf9ZRAeLbb273P1QKw8QjAoDoLSDOQY1C5Qd2HIj33VV0f==",
+    "type": "Windows",
+    "rootFolderUid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~AdqMdjZWUXZegydbJ-61z5iWmlRmPqRhOcWLswgCvToeCtn0TIkJXvAIA9bDTyFMyXZn-cjEQERcdn3N81buDW==",
+    "creationTime": "2024-01-04T16:00:00.000Z",
+    "hasDeprecatedName": false,
+    "shareId": "SorpqK2RSesWonJOA97GBC==",
+    "name": {
+      "ok": true,
+      "value": "Workstation"
+    }
+  },
+  {
+    "uid": "hVhK3RPU9I5rnNUyFWe0JTE2LbVCn2Ml-jlkLkqSeOac_LOFfRoWynZtL9YvzN_8btMLpGSEqNWGL75aDYB0KVuiru==",
+    "type": "Windows",
+    "rootFolderUid": "WkxN3G2TeAlwSb69DkZNZUzS51cyjXY8PCuPLKoo1egRB8ukN8Nr28bNczKH0u-QBD57Fd8v4DGxT4tfvw94IP==~Rnrcrq",
+    "creationTime": "2023-03-01T09:00:00.000Z",
+    "hasDeprecatedName": true,
+    "shareId": "9v1eYmn3_sGy2B1Yy87t",
+    "name": {
+      "ok": true,
+      "value": "Laptop"
+    }
+  }
+]

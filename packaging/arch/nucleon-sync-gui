@@ -1,0 +1,4 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Nucleon Sync dashboard. Wayland (Hyprland, KDE, GNOME): native Wayland when available, X11 otherwise.
+exec /opt/nucleon-sync/nucleon-sync --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations "$@"

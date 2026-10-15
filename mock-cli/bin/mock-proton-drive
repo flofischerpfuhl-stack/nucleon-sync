@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Runs the TypeScript source directly (Node >= 26 strips types natively).
+import { main } from '../src/main.ts';
+await main(process.argv.slice(2));

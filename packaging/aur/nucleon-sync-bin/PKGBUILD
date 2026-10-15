@@ -1,0 +1,53 @@
+# Maintainer: TBD <aur-maintainer@example.invalid>
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Binary package: the prebuilt app (Electron + bundled daemon) from the GitHub release, installed to /opt/nucleon-sync.
+# The packaging files (launchers, desktop entry, user unit, icons, Omarchy/Waybar helpers) come from the tagged source.
+# The official Proton Drive CLI is a dependency (proton-drive-cli-bin or proton-drive-cli from the AUR) and is never
+# bundled. Release checklist: bump pkgver, `updpkgsums`, `makepkg --printsrcinfo > .SRCINFO`, `namcap`.
+pkgname=nucleon-sync-bin
+_pkgname=nucleon-sync
+pkgver=0.3.0
+pkgrel=1
+pkgdesc='Sync folders with Proton Drive (third-party app on the official proton-drive CLI): service, tray dashboard, agent CLI'
+arch=('x86_64')
+url='https://github.com/flofischerpfuhl-stack/nucleon-sync'
+license=('GPL-3.0-or-later')
+depends=('proton-drive-cli' 'gtk3' 'nss' 'alsa-lib' 'libxss' 'libxtst' 'libsecret' 'systemd' 'hicolor-icon-theme')
+optdepends=(
+  'gnome-keyring: Secret Service provider for the Proton session (Hyprland, GNOME)'
+  'kwallet: Secret Service provider for the Proton session (KDE)'
+  'libnotify: desktop notifications'
+  'jq: nucleon-sync-omarchy (Omarchy bar and menu integration)'
+)
+provides=("${_pkgname}")
+conflicts=("${_pkgname}")
+options=('!strip' '!debug')
+source=("${_pkgname}-${pkgver}-linux-x64.tar.gz::${url}/releases/download/v${pkgver}/${_pkgname}-${pkgver}-linux-x64.tar.gz"
+        "${_pkgname}-${pkgver}-src.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('SKIP'
+            'SKIP')
+
+package() {
+  local app="${srcdir}/${_pkgname}-${pkgver}-linux-x64"
+  local src="${srcdir}/${_pkgname}-${pkgver}"
+  install -d "${pkgdir}/opt/${_pkgname}"
+  cp -a "${app}/." "${pkgdir}/opt/${_pkgname}/"
+  # Electron's setuid sandbox helper (user namespaces are used when available)
+  chmod 4755 "${pkgdir}/opt/${_pkgname}/chrome-sandbox"
+  install -Dm755 "${src}/packaging/arch/nucleon-sync-gui" "${pkgdir}/usr/bin/nucleon-sync-gui"
+  install -Dm755 "${src}/packaging/arch/nucleon-sync-cli" "${pkgdir}/usr/bin/nucleon-sync"
+  install -Dm644 "${src}/packaging/arch/nucleon-sync.desktop" "${pkgdir}/usr/share/applications/nucleon-sync.desktop"
+  install -Dm644 "${src}/packaging/arch/nucleon-sync.service" "${pkgdir}/usr/lib/systemd/user/nucleon-sync.service"
+  local d
+  for d in "${src}"/packaging/icons/hicolor/*/apps; do
+    install -Dm644 -t "${pkgdir}/usr/share/icons/hicolor/$(basename "$(dirname "$d")")/apps" "$d"/*
+  done
+  # status bar (Omarchy shell / Waybar) and the Omarchy integration helper (`nucleon-sync-omarchy install`)
+  install -Dm755 "${src}/packaging/omarchy/nucleon-sync-bar" "${pkgdir}/usr/bin/nucleon-sync-bar"
+  install -Dm755 "${src}/packaging/omarchy/nucleon-sync-omarchy" "${pkgdir}/usr/bin/nucleon-sync-omarchy"
+  install -Dm644 -t "${pkgdir}/usr/share/${_pkgname}/omarchy" \
+    "${src}/packaging/omarchy/waybar-module.jsonc" "${src}/packaging/omarchy/waybar.css"
+  install -Dm644 "${src}/agent-skill/SKILL.md" "${pkgdir}/usr/share/${_pkgname}/agent-skill/SKILL.md"
+  install -Dm644 "${src}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

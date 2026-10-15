@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<!-- Nucleon Sync app icon: a nucleus (four nucleons) inside a two-arrow sync orbit. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#127a86"/>
+      <stop offset="1" stop-color="#062a36"/>
+    </linearGradient>
+    <radialGradient id="warm" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#ffe29a"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </radialGradient>
+    <radialGradient id="cool" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#b6eef2"/>
+    </radialGradient>
+  </defs>
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="url(#bg)"/>
+  <!-- sync orbit: two arcs with arrow heads -->
+  <g fill="none" stroke="#5ee0d6" stroke-width="26" stroke-linecap="round">
+    <path d="M 108.9 186.2 A 164 164 0 0 1 380.6 147.4"/>
+    <path d="M 403.1 325.8 A 164 164 0 0 1 131.4 364.6"/>
+  </g>
+  <g fill="#5ee0d6">
+    <path d="M 414 112 L 408 192 L 342 150 Z"/>
+    <path d="M 98 400 L 104 320 L 170 362 Z"/>
+  </g>
+  <!-- nucleus -->
+  <g stroke="#062a36" stroke-width="7">
+    <circle cx="226" cy="230" r="46" fill="url(#warm)"/>
+    <circle cx="290" cy="234" r="46" fill="url(#cool)"/>
+    <circle cx="222" cy="290" r="46" fill="url(#cool)"/>
+    <circle cx="286" cy="292" r="46" fill="url(#warm)"/>
+  </g>
+</svg>

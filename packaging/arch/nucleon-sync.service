@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Fallback user unit of the binary package (/opt/nucleon-sync). `systemctl --user enable --now nucleon-sync` works
+# without the setup wizard; the wizard writes ~/.config/systemd/user/nucleon-sync.service, which takes precedence.
+[Unit]
+Description=Nucleon Sync daemon (Proton Drive sync)
+Documentation=https://github.com/flofischerpfuhl-stack/nucleon-sync
+After=graphical-session.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=ELECTRON_RUN_AS_NODE=1
+Environment=NUCLEON_SYNC_ALLOW_WRITES=1
+Environment=NUCLEON_SYNC_NODE=/opt/nucleon-sync/nucleon-sync
+Environment=NUCLEON_SYNC_SHIM_DIR=/opt/nucleon-sync/resources/daemon/shim
+ExecStart=/opt/nucleon-sync/nucleon-sync /opt/nucleon-sync/resources/daemon/nucleon-syncd.mjs
+Restart=on-failure
+RestartSec=15
+Nice=10
+IOSchedulingClass=idle
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target
